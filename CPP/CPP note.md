@@ -16,11 +16,11 @@ Microflop::wander("go dancing");
 Piscine::wander("a fish named Desire");
 ```
 
-使用`using nameapcae std; `之后可以忽略using
+使用 `using nameapcae std; `之后可以忽略using
 
 #### `cout`输出
 
-`endl`和`\n`是等价的
+`endl`和 `\n`是等价的
 
 ### 二、处理数据
 
@@ -32,15 +32,11 @@ Piscine::wander("a fish named Desire");
 
 `const int month = 12`这样可以用month来代替12，注意定义的时候初始化
 
-
-
 ### 三、复合类型
 
 #### 结构体
 
 如果初始化比成员少，余下的成员会被设置为0
-
-
 
 #### 字符串
 
@@ -52,9 +48,7 @@ Piscine::wander("a fish named Desire");
 
 ###### `get()`
 
-不舍弃\n，所以可以用`cin.get(name,num).get()`来舍弃换行符
-
-
+不舍弃\n，所以可以用 `cin.get(name,num).get()`来舍弃换行符
 
 #### string类
 
@@ -63,8 +57,6 @@ Piscine::wander("a fish named Desire");
 **计算长度**：str1.size()
 
 输入：`getline(cin,str)`
-
-
 
 为了避免在字符串输出中出现太多
 
@@ -75,7 +67,7 @@ R"+*("(sdafaf?)",sadafas.)+*";
 
 #### 使用new来分配内存
 
-c++中依然可以使用c中的`malloc()`函数来分配内存，但是c++有更好的方法就是***new***函数
+c++中依然可以使用c中的 `malloc()`函数来分配内存，但是c++有更好的方法就是***new***函数
 
 ```c++
 int * pt =new int 
@@ -86,21 +78,16 @@ int * pt =new int
 
 与free对应，`delete pointer_name`
 
-1. 配对的使用`new`和`delete`，不然可能造成内存泄漏
-
-2. 不要使用`delete`来删除不是`new`定义的内存
-
-3. 不要两次`delete`同一个函数
-
-4. 对空指针`delete`是安全的
-
+1. 配对的使用 `new`和 `delete`，不然可能造成内存泄漏
+2. 不要使用 `delete`来删除不是 `new`定义的内存
+3. 不要两次 `delete`同一个函数
+4. 对空指针 `delete`是安全的
 5. 如果定义的是动态内存数组
 
    ```c++
    short * ps=new short [100];
    delete [] ps;
    ```
-
 
 一种节约内存的方法：
 
@@ -137,8 +124,6 @@ array<int 5>ai;
 1. array对象可以直接复制
 2. 用数组a1[-2]时等于*(a1-2)会跑到奇怪的地方去
 
-
-
 #### `ofstream与ifstream`类
 
 ##### 1.打开文件
@@ -152,7 +137,7 @@ void open(const char * filename, int mode,int access)
 //access打开文件属性
 ```
 
-打开文件的方式在类ios(是所有流式I/O类的基类)中定义，常用的值如下： 
+打开文件的方式在类ios(是所有流式I/O类的基类)中定义，常用的值如下：
 
 ```
 ios::app：　　		以追加的方式打开文件 
@@ -165,23 +150,21 @@ ios::noreplace:   不覆盖文件，所以打开文件时如果文件存在失�
 ios::trunc：　　	如果文件存在，把文件长度设为0 
 ```
 
-可以用“或”把以上属性连接起来，如`ios::out|ios::binary `
-**打开文件的属性取值是：** 
-0：普通文件，打开访问 
-1：只读文件 
-2：隐含文件 
-4：系统文件 
+可以用“或”把以上属性连接起来，如 `ios::out|ios::binary `
+**打开文件的属性取值是：**
+0：普通文件，打开访问
+1：只读文件
+2：隐含文件
+4：系统文件
 
-`fstream`还有和open()一样的构造函数，在定义的时侯就可以打开文件了： 
+`fstream`还有和open()一样的构造函数，在定义的时侯就可以打开文件了：
 `fstream file1("c:\\config.sys"); `
 
-`fstream`有两个子类：`ifstream(input file stream)和ofstream(outpu file stream)`，`ifstream`默认以输入方式打开文件，而`ofstream`默认以输出方式打开文件
+`fstream`有两个子类：`ifstream(input file stream)和ofstream(outpu file stream)`，`ifstream`默认以输入方式打开文件，而 `ofstream`默认以输出方式打开文件
 
 ##### 2.关闭文件
 
 `file1.close();`
-
-
 
 ### 四、循环结构
 
@@ -224,11 +207,9 @@ cin.get(ch);
 
 #### 键盘模拟EOF
 
-`cin.eof()`和`cin.fail()`两个函数，如何检测到EOF，返回的bool值为ture，否则为false
+`cin.eof()`和 `cin.fail()`两个函数，如何检测到EOF，返回的bool值为ture，否则为false
 
-
-
-`cin.get(char)`的返回值是一个`cin`对象。然而，`istream`类提供一个可以将`istream对象`转换为bool值的函数
+`cin.get(char)`的返回值是一个 `cin`对象。然而，`istream`类提供一个可以将 `istream对象`转换为bool值的函数
 
 ```c++
 while(cin)   //更好的写法
@@ -236,13 +217,11 @@ while(cin)   //更好的写法
 
 ### 五、条件结构
 
-**可以用`3==number`这种方法来避免赋值错误**
+**可以用 `3==number`这种方法来避免赋值错误**
 
 #### 字符库函数cctype
 
 ![image-20220112075314616](pics/image-20220112075314616.png)
-
-
 
 #### 简单的文件输入输出
 
@@ -250,10 +229,10 @@ while(cin)   //更好的写法
 
 准备：
 
-1. 包含头文件`fstream`
-2. 声明一个或多个`ofstream`对象，并且命名
-3. 使用`using`或`std::`
-4. 关联使用`open`和`close`
+1. 包含头文件 `fstream`
+2. 声明一个或多个 `ofstream`对象，并且命名
+3. 使用 `using`或 `std::`
+4. 关联使用 `open`和 `close`
 
 ```c++
 ofstream outfile; //声明变量
@@ -266,15 +245,11 @@ outfile.close      //已经关联所以可以直接关闭
 
 **ps：**打开以存在的文件时，会使文件内容丢失
 
-
-
 ##### 输出：
 
-与上面相同，主要是声明`ifstream`对象
+与上面相同，主要是声明 `ifstream`对象
 
 `is_open`检测是否打开文件
-
-
 
 ### 六、函数
 
@@ -290,29 +265,21 @@ outfile.close      //已经关联所以可以直接关闭
 - 将形参声明为指向polar的指针，即polar *类型，由于函数不修改结构，因此使用了const修饰符
 - 由于形参是指针不是结构，因此应使用间接成员运算符
 
-
-
 #### 函数指针
 
 ##### 1.获取函数地址
 
 只要使用函数名，如果think()是一个函数，think就是该函数的地址
 
-
-
 ### 七、函数谈幽
 
 #### 1.内联函数
 
-函数前加上`inline`，将整个定义（函数头和函数代码）放在本应该提供原型的地方，内联函数不能递归，算是一种用空间换时间的方法，当函数简短切调用很多次的时候有时间优势
-
-
+函数前加上 `inline`，将整个定义（函数头和函数代码）放在本应该提供原型的地方，内联函数不能递归，算是一种用空间换时间的方法，当函数简短切调用很多次的时候有时间优势
 
 **内联与宏**
 
 宏不是通过参数传递实现的，而是通过文本替换实现的
-
-
 
 #### 2.引用变量
 
@@ -333,13 +300,9 @@ int & rodents = rats;
 
 返回引用变量的时候不能返回临时
 
-
-
 C++11新增了右值引用，使用&&声明
 
 函数可以返回引用，但是要避免返回临时引用，包括指针也是如此
-
-
 
 ### 八、内存与函数空间
 
@@ -350,8 +313,6 @@ static修饰函数中的变量时，只在初始化程序是定义，再次引�
 1.使用new初始化
 
 `int *pi= new int(6)`
-
-
 
 #### 名称空间
 
@@ -366,8 +327,6 @@ namespace Jack{
 using 函数可以时该函数在作用块里默认使用
 
 ex:`using Jack::t1`
-
-
 
 ### 九、对象和类
 
@@ -397,13 +356,9 @@ void stock::show() const;
 
 ```
 
-
-
 #### 运算符的重载
 
 `operator +()`//通过这样的方式可以对运算符进行重载
-
-
 
 #### 友元函数
 
@@ -431,8 +386,6 @@ std::ostream & opeartor<<(std::ostream & os, const Vector &v)
 }//这样可以连续使用cout
 ```
 
-
-
 #### 转换函数
 
 ##### 从类转换到其他
@@ -453,22 +406,18 @@ north = "polaries";					//not allowed
 north = star("polaries"); 			//allowed
 ```
 
-
-
 ### 十、类和动态内存分配
 
 无论创建多少个对象，程序都只共享一个静态类变量副本
 
 不能在类声明里面创建
 
-
-
 如果类中包含了new初始化的指针，应当定义一个复制构造函数，以复制指向的数据，而不是指针，这被称为深度复制
 
 ```c++
 //定义一个显示复制构造函数以解决问题
 StringBad::StringBad(const StringBad & st)
-{	
+{
     num_strings++;
     len = st.len;
     str = new char[len+1];
@@ -495,15 +444,11 @@ StringBad & StringBad::operator=(const StringBad & st){
 
 初始化的时候不一定会使用赋值运算符，而是使用复制构造函数
 
-
-
 #### 在构造函数中使用new的注意事项
 
 - 在构造函数中使用new，必须在析构函数中使用delete
 - new对应delete，new []对应delete []
 - 如果有多个构造函数，应该统一使用，因为析构函数只有一个
-
-
 
 ### 十一、继承
 
@@ -516,7 +461,6 @@ class RatedPlayer : public TableTennisPlayer
 - 派生类需要自己的构造函数
 - 可以添加数据以及成员函数
 
-​	
 
 ```c++
 //RatedPlayer的构造代码
@@ -526,8 +470,6 @@ RatedPlayer::RatePlayer(unsign int i, const string & fn,
     rating = i;
 }
 ```
-
-
 
 常量只能够初始化而无法赋值，构造函数为了解决这个问题可使用下面的方法
 
@@ -542,13 +484,11 @@ Queue::Queue(int qs) : qsize(qs)，front(NULL), rear(NULL), item(0)
 }
 ```
 
-对于`const`类成员以及被声明为引用的类成员
-
-
+对于 `const`类成员以及被声明为引用的类成员
 
 虚函数的目的是为了使用指针指向对象对应的类函数
 
-使用`virtual`关键字
+使用 `virtual`关键字
 
 - 构造函数不能是虚函数
 - 析构函数要是虚函数
@@ -559,27 +499,19 @@ Queue::Queue(int qs) : qsize(qs)，front(NULL), rear(NULL), item(0)
 - 如果重新定义继承的方法，要保证参数完全一致
 - 如果基类声明被重载了，则需要重新定义所有的基类版本
 
-
-
 ##### 访问控制：protect
 
 派生类可以访问protect修饰的变量，外部不能直接访问
 
-
-
 ##### 抽象基类
 
 ex：为圆和椭圆创造一个共同的类
-
-
 
 ###### 纯虚函数：在函数声明结尾处添加=0
 
 当类声明中存在纯虚函数时，则无法创建该类的对象
 
 所有为了创建抽象类，则需要至少使一个函数变为纯虚函数
-
-
 
 ### 十二、代码重用
 
@@ -596,14 +528,9 @@ stdlib.h头文件中 定义了两个变量：
 \#define EXIT_SUCCESS 0
 \#define EXIT_FAILURE 1
 
-
-
 ```c++
 #ifndef COORDIN
 #define COORDIN //s
 ...
 #endif //避免重复包含头文件
 ```
-
-
-

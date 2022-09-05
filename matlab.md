@@ -17,3 +17,14 @@ format rat %最接近的有理表达式
 
 列向量用；区分
 
+ctrl+r 注释
+
+ctrl+t 取消注释
+
+ctrl+n 创建新的m文件
+
+
+
+
+
+disp("输出函数")

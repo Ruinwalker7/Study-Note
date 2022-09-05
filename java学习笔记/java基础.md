@@ -1,8 +1,22 @@
 # Java
 
+#### 
+
+
+
 ### 基础
 
+#### JDK JRE JVM
+
 JDK：开发环境，包含JRE和JVM
+
+Java Development Kit
+
+Java Running environment
+
+Java Virtual Machine
+
+
 
 `System.out.println(a);`
 
@@ -12,6 +26,8 @@ float和long初始化要加F和L
 
 char,byte,short做加法时会类型提升到int
 
+骆驼命名法：第一个单词大写
+
 
 
 #### 输入
@@ -19,8 +35,22 @@ char,byte,short做加法时会类型提升到int
 ```java
 //导包
 import java.util.Scanner;//在类定义的上面
+//或
+import java.util.*;
 Scanner sc = new Scanner(System.in);//创建对象
-int i=sc.nextInt()//接受数据
+int i=sc.nextInt();//接受数据
+nextline();
+next();//空格为止
+nextDouble();//读取浮点数
+```
+
+##### 文件的输入
+
+```java
+Scanner in = new Scnner(Path.of("myfile.txt"),StandardCharsets.UTF_8);
+//写入文件
+PrintWriter out = new PrintWriter("myfile.txt",StandardCharsets.UTF_8);
+
 ```
 
 
@@ -191,9 +221,38 @@ cmd中 `javac -d . HelloWorld.java`
 
 
 
+#### break
+
+```java
+label:
+{
+	...
+	if(condition) break label;//exits block
+	...
+}//跳出label代码区
+```
 
 
 
+#### 大数
+
+BigInteger和BigDecimal
+
+```java
+valueOf(int i）//将普通的数字转换为大数
+```
+
+
+
+#### 数组
+
+数组拷贝：
+
+```java
+int[] copiedLucktNum = Array.copyOf(luckyNum,luckyNum.length);
+//可以通过该函数增加数组的大小
+int[] copiedLucktNum = Array.copyOf(luckyNum,luckyNum.length*2);
+```
 
 
 
@@ -320,6 +379,8 @@ equal()方法
 
 比较：s1.equal(s2)返回值是boolen类 
 
+​			equalsIgnoreCase:忽略大小写的比较方式
+
 charAt(i)返回指定索引的char值
 
 length()返回字符串长度
@@ -328,9 +389,17 @@ length()返回字符串长度
 
 `String.valueOf(基本类);`把多种类转为字符串
 
+`String.substring(first,end)//not include end`
+
+**不使用==来比较字符串是否相等**
+
 
 
 #### StringBuilder类
+
+目的是为了改造String类对于字符串构造时会重复创建String而造成空间的浪费
+
+StringBuilder构造完之后，可以使用toString()转换
 
 可变字符串
 
@@ -356,15 +425,20 @@ StringBuilder转换到String：
 
 #### ArrayList类
 
-| 方法名                            | 说明                               |
-| --------------------------------- | ---------------------------------- |
-| public boolen remove(Object to)   | 删除指定元素，返回是否成功         |
-| public E remove(int index)        | 删除指定索引处元素，返回被删除元素 |
-| public E set(int index,E element) | 修改指定索引处元素，返回被修改元素 |
-| public E get(int index)           | 返回指定索引处元素                 |
-| public int size()                 | 返回集合中元素个数                 |
+| 方法名                            | 说明                                               |
+| --------------------------------- | -------------------------------------------------- |
+| public boolen remove(Object to)   | 删除指定元素，返回是否成功                         |
+| public E remove(int index)        | 删除指定索引处元素，返回被删除元素                 |
+| public E set(int index,E element) | 修改指定索引处元素，返回被修改元素，add后才可以set |
+| public E get(int index)           | 返回指定索引处元素                                 |
+| public int size()                 | 返回集合中元素个数                                 |
 
 `ArrayList<int> obj = new ArrayList<int>`
+
+```java
+void ensureCapacity(int Capacity);//重新分配大小
+void trimToSize()//将列表大小缩小到当前大小
+```
 
 
 
@@ -464,7 +538,7 @@ ex：
 
 `c.add(Calendar.YEAR,10)`日期增加十年
 
-
+好像还是有一点点的炒
 
 #### 基本数据类型
 
@@ -474,15 +548,13 @@ ex：
 
 **使用前要做是否为NULL的判断**
 
-
+在家玩好像还可以但是用来打字的话还是有一点炸的我脑壳痛！还回去还回去137289===========
 
 ```java
 System.exit(0);//退出虚拟机
 ```
 
-
-
-### 面向对象编程的三大特性
+### 面向对象编程的特性
 
 面向对象的三大特征（封装，继承，多态）
 
@@ -523,6 +595,16 @@ super可以访问父类中的变量
 与重写和继承有关
 
 
+
+### 抽象
+
+用abstract修饰方法，这样就不用实现，而只需要在子类中实现，方法名前面也要加上abstract
+
+
+
+### 接口
+
+实现comparable接口，使用comparaTo函数，这样才可以使用sort函数
 
 
 

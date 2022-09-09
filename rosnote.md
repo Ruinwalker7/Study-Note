@@ -46,11 +46,25 @@ rosrun talker talker
 
 
 
-#### tips:
+#### tips和踩过的坑:
 
 ##### 找不到ros.h
 
 在includepath里面添加
 
 "/opt/ros/noetic/include/**"
+
+
+
+##### 编译完rosrun找不到程序
+
+包里面cmakelist取消catkin_pakeage()和add_executable(${PROJECT_NAME}_node src/chatter.cpp)注释
+
+${PROJECT_NAME}_node 这个字符串为devel文件夹下的可执行程序
+
+
+
+##### ！！！编译完运行的还是旧程序
+
+把devel和build里面同名的包全删了，重新编译
 

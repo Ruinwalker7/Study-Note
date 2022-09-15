@@ -68,3 +68,23 @@ ${PROJECT_NAME}_node 这个字符串为devel文件夹下的可执行程序
 
 把devel和build里面同名的包全删了，重新编译
 
+
+
+##### 运行完python后报错：解释器错误: 没有那个文件或目录
+
+rosrun listener listener.py
+/opt/ros/noetic/bin/rosrun: /home/chen/Documents/sample_1/src/listener/scripts/listener.py：/use/bin/python3：解释器错误: 没有那个文件或目录
+/opt/ros/noetic/bin/rosrun: 行 150: /home/chen/Documents/sample_1/src/listener/scripts/listener.py: 成功
+
+
+
+把对应包中
+
+```cmake
+catkin_install_python(PROGRAMS
+  scripts/listener.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+```
+
+取消注释

@@ -85,6 +85,14 @@ PrintWriter out = new PrintWriter("myfile.txt",StandardCharsets.UTF_8);
 
 
 
+#### java对内存的管理
+
+分为堆内存和栈内存
+
+基本数据类型会在栈内存中存放，new新建立的类会在栈内存中新建一个地址，然后在堆内存中开辟一片空间，堆内存中还有常量池，用于存放静态变量以及string字符串
+
+
+
 #### 方法重载
 
 一个类中定义多个方法的关系
@@ -261,6 +269,23 @@ int[] copiedLucktNum = Array.copyOf(luckyNum,luckyNum.length*2);
 限定：private
 
 局部变量和成员变量同名时候用this
+
+
+
+#### java函数的数据传递
+
+值传递的适用数据类型：
+1.八大基本数据类型（byte,short,int,long,char,float,double,boolean)
+2.String类型
+
+String数据类型在传递时会在堆内存中创建的常量池中，改变时不改变原数据地址指向的字符串
+
+
+
+引用传递：
+
+适用范围：
+除String以外的数据类型的对象
 
 
 

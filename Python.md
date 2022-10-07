@@ -64,7 +64,90 @@ for i in range(5)#i为0-4
 
 
 
-#### 
+#### 函数
+
+- 定义函数要用`def`
+
+- 导入函数 `from abstract import my_abs`
+
+- 数据类型检查：
+
+```python
+if not isinstance(x, (int, float)):
+        raise TypeError('bad operand type')
+```
+
+- 返回多个值
+
+```python
+import math
+
+def move(x, y, step, angle=0):
+    nx = x + step * math.cos(angle)
+    ny = y - step * math.sin(angle)
+    return nx, ny
+
+x, y = move(100, 100, 60, math.pi / 6)
+```
+
+返回的值是`tuple`，但是可以用多个变量按位置接受
+
+- 设置默认参数：
+
+与c++类似，但是要把默认的值放后面，需要赋值的值放前面，不然python会给出编译错误
+
+- **默认参数要牢记一点：默认参数必须指向不变对象**
+
+为什么要设计`str`、`None`这样的不变对象呢？因为不变对象一旦创建，对象内部的数据就不能修改，这样就减少了由于修改数据导致的错误。此外，由于对象不变，多任务环境下同时读取对象不需要加锁，同时读一点问题都没有。我们在编写程序时，如果可以设计一个不变对象，那就尽量设计成不变对象。
+
+- 把函数参数设计成可变参数
+
+```python
+def calc(*numbers):
+    sum = 0
+    for n in numbers:
+        sum = sum + n * n
+    return sum
+```
+
+- 关键字参数
+
+而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个`dict`：
+
+```python
+def person(name, age, **kw):
+    print('name:', name, 'age:', age, 'other:', kw)
+    
+person('Adam', 45, gender='M', job='Engineer')
+name: Adam age: 45 other: {'gender': 'M', 'job': 'Engineer'}
+
+>>> extra = {'city': 'Beijing', 'job': 'Engineer'}
+>>> person('Jack', 24, **extra)
+name: Jack age: 24 other: {'city': 'Beijing', 'job': 'Engineer'}
+```
+
+如果函数定义中已经有了一个可变参数，后面跟着的命名关键字参数就不再需要一个特殊分隔符`*`了：
+
+```python
+def person(name, age, *args, city, job):
+    print(name, age, args, city, job)
+```
+
+命名关键字参数必须传入参数名，这和位置参数不同。如果没有传入参数名，调用将报错
+
+
+
+**在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，这5种参数都可以组合使用。但是请注意，参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。**
+
+
+
+- 递归
+
+解决递归调用栈溢出的方法是通过**尾递归**优化，事实上尾递归和循环的效果是一样的
+
+尾递归是指，**在函数返回的时候，调用自身本身，并且，return语句不能包含表达式。**这样，编译器或者解释器就可以把尾递归做优化，使递归本身无论调用多少次，都只占用一个栈帧，不会出现栈溢出的情况。
+
+
 
 ### 问题与解决
 

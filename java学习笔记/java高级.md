@@ -1,4 +1,4 @@
-## Spring
+# Spring
 
 ### IoC控制反转
 
@@ -116,3 +116,76 @@ public class OrderDaoFactory{
 - `@Configuration`
 - `@ComponentScan`
 - `AnnotationConfigApplicationContext`
+
+
+
+# Spring Boot
+
+### 注解:
+
+#### @Date
+
+> 要使用 @Data 注解要先引入lombok，lombok 是什么，它是一个工具类库，可以用简单的注解形式来简化代码，提高开发效率。
+
+```java
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.4</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+能通过注解的形式自动生成构造器、getter/setter、equals、hashcode、toString等方法，提高了一定的开发效率
+
+
+
+
+
+# Mybaits Plus
+
+### 分页插件
+
+```java
+@Configuration
+public class MybatisConfig {
+
+	@Bean
+	public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    	MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    	interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+    	return interceptor;}
+}
+```
+
+##### InnerInterceptor接口
+
+我们提供的插件都将基于此接口来实现功能 目前已有的功能: 
+
+自动分页: `PaginationInnerInterceptor `
+
+多租户:`TenantLineInnerInterceptor `
+
+动态表名: `DynamicTableNameInnerInterceptor `
+
+乐观锁:`OptimisticLockerInnerInterceptor `
+
+SQL性能规范:` IllegalSQLInnerInterceptor`
+防止全表更新与删除:` BlockAttackInnerInterceptor `
+
+注意: 使用多个功能需要注意顺序关系,建议使用如下顺序：
+
+- 多租户
+- 动态表名
+- 分页,乐观锁
+- sql性能规范,防止全表更新与删除
+
+总结: 对sql进行单次改造的优先放入，不对sql进行改造的最后放入
+
+### MetaObjectHandler接口
+
+需要重写两个函数`insertFill`和`updateFill`
+
+实现自动填充，还需要在实现类的对应参数上加上`@TableField(fill=Field.Fill.INSERT_UPDATE)`
+
+上面是在插入和更新时填充对应字段

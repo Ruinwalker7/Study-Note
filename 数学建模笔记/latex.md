@@ -3,7 +3,7 @@
 - 中文
 
 ```latex
-\usepackage[utf8]{ctex}
+\usepackage[utf8]{ctex}  %编译器要改
 ```
 
 - 页边距
@@ -20,6 +20,48 @@
 ```
 
 
+
+```latex
+\begin{figure}[h]
+    \centering %居中
+    \includegraphics[width=0.75\textwidth]{mesh} %大小变成原图片75%
+    \caption{A nice plot.} %图片名称
+    \label{fig:mesh1} %标签
+\end{figure}
+```
+
+
+
+列表
+
+```latex
+\begin{itemize}
+\end{itemize}
+
+\begin{enumerate}
+\end{enumerate}   %有序列表
+
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+\renewcommand{\labelenumiv}
+{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}} %重设列表
+
+enumitem package %需要强大功能ne'g
+```
+
+
+
+段落
+
+两个enter
+
+```latex
+\newline
+\setlength{\parindent}{20pt} %设置段落距离
+\noindent%无距离
+```
+
+不要使用多个\newline来模拟较大的段间距
 
 ### 数学公式
 

@@ -486,7 +486,9 @@ Queue::Queue(int qs) : qsize(qs)，front(NULL), rear(NULL), item(0)
 
 对于 `const`类成员以及被声明为引用的类成员
 
-虚函数的目的是为了使用指针指向对象对应的类函数
+##### 虚函数
+
+虚函数的目的是为了使用指针指向基类的指针可以调用子类的函数
 
 使用 `virtual`关键字
 
@@ -498,6 +500,8 @@ Queue::Queue(int qs) : qsize(qs)，front(NULL), rear(NULL), item(0)
 
 - 如果重新定义继承的方法，要保证参数完全一致
 - 如果基类声明被重载了，则需要重新定义所有的基类版本
+
+
 
 ##### 访问控制：protect
 

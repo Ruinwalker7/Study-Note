@@ -64,6 +64,8 @@ for i in range(5)#i为0-4
 
 
 
+
+
 #### 函数
 
 - 定义函数要用`def`
@@ -146,6 +148,112 @@ def person(name, age, *args, city, job):
 解决递归调用栈溢出的方法是通过**尾递归**优化，事实上尾递归和循环的效果是一样的
 
 尾递归是指，**在函数返回的时候，调用自身本身，并且，return语句不能包含表达式。**这样，编译器或者解释器就可以把尾递归做优化，使递归本身无论调用多少次，都只占用一个栈帧，不会出现栈溢出的情况。
+
+
+
+### 高级特性
+
+#### 切片
+
+```python
+L[0:3] #取前三个元素
+L[:3] 	#如果是0可以省略
+L[-2:] #倒数两个 注意倒过来是第一个元素是-1
+```
+
+
+
+#### 迭代
+
+```python
+for ch in 'abc'
+#判断方法
+>>> from collections.abc import Iterable
+>>> isinstance('abc', Iterable) # str是否可迭代
+True
+>>> isinstance([1,2,3], Iterable) # list是否可迭代
+True
+>>> isinstance(123, Iterable) # 整数是否可迭代
+False
+```
+
+
+
+#### 列表生成式
+
+```python
+[x*x for x in range(1,4)] #[1,4,9,16]
+#筛选偶数的平方
+>>> [x * x for x in range(1, 11) if x % 2 == 0]
+[4, 16, 36, 64, 100]
+```
+
+
+
+#### 生成器
+
+使用next算出下一个值
+
+编写函数时使用yield返回，调用next时会从yield开始
+
+
+
+### 函数式编程
+
+#### 高级函数
+
+##### map
+
+```python
+def f(x):
+	return x*x
+
+>>>list[map(f,[1,2,3,4,5])]
+[1,4,9,16,25]
+```
+
+map传入两个值，第一个是函数，一个是`Iterable`，最终返回一个`Iterator`
+
+
+
+##### reduce
+
+```python
+>>> from functools import reduce
+>>> def fn(x, y):
+...     return x * 10 + y
+...
+>>> reduce(fn, [1, 3, 5, 7, 9])
+13579
+```
+
+操作两个数，返回值与下一个数继续操作
+
+
+
+##### filter
+
+筛选函数，可以对任何序列进行操作
+
+可以理解为将一个筛选方法加入到对象中，如果是一个`Iterator`则调用next寻找下一个
+
+
+
+##### sorted
+
+排序函数，可以加入一个方法决定排序的规则
+
+
+
+#### 返回函数
+
+```python
+>>> f = lazy_sum(1, 3, 5, 7, 9)
+>>> f
+<function lazy_sum.<locals>.sum at 0x101c6ed90>
+>>> f()
+25
+```
 
 
 

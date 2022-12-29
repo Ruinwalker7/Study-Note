@@ -403,7 +403,7 @@ In [100]: store.close()
 
 
 
-#### 填充缺失数据
+##### 填充缺失数据
 
 `fillna(n)`使用n来填充NaN
 
@@ -423,3 +423,38 @@ Out[34]:
 ```
 
 ![](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240.png)
+
+
+
+#### 数据转换
+
+##### 移除重复数据
+
+DataFrame的`duplicated`方法返回一个布尔型Series，表示各行是否是重复行（前面出现过的行）
+
+还有一个与此相关的`drop_duplicates`方法，它会返回一个DataFrame，重复的数组会取消
+
+这两个方法会判断所有列，如果只需要判断某一个列`data.drop_duplicates(['k1'])`
+
+传入`keep='last'`则保留最后一个重复元素，默认是保留第一个
+
+
+
+##### 利用函数或映射进行数据转换
+
+通过`map`函数匹配
+
+```python
+data['food'].map(lambda x: meat_to_animal[x.lower()])
+```
+
+> 使用map是一种实现元素级转换以及其他数据清理工作的便捷方式。
+
+
+
+##### 替换值
+
+`replace([-999,-1000],[np.nan,0])`
+
+将不同的值传入，可以针对替换
+

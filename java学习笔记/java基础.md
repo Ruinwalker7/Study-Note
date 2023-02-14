@@ -164,59 +164,6 @@ cmd中 `javac -d . HelloWorld.java`
 
 
 
-#### 接口
-
-**公共规范标准**
-
-**对行为的规范**
-
-##### 接口特点
-
-- 关键字：`Interface`
-  - `public interface 接口名{}`
-
-- 类实现接口限定词implements
-  - public class implements 接口名{}
-- 接口不能实例化
-  - 通过实现类对象实例化
-- 接口的实现类
-  - 要么是抽象类
-  - 要么重写所有抽象方法
-
-
-
-##### 接口成员特点：
-
-- 成员变量
-  - 只能是常量
-  - 默认修饰符：`public static final`
-- 构造方法
-  - 接口没有构造方法
-  - 一个类如果没有父类，默认继承是Object类
-- 成员方法
-  - 只能是抽象方法
-  - 默认修饰符：`public abstract`
-
-
-
-##### 类和接口的关系
-
-- 类和类关系
-
-  继承关系，多层继承
-
-- 类和接口
-
-  实现关系，可以单实现，也可以多实现，也可以继承一个类的时候同时实现多个接口
-
-- 接口和接口关系
-
-  继承关系，可以单继承，也可以多继承
-
-
-
-自己总结一下：所有类基础的功能都在抽象类里面，而单独的功能或者以后添加的功能写在接口里面，因为可以添加多个接口，就可以实现一直添加功能
-
 
 
 #### break
@@ -374,6 +321,8 @@ System.exit(0);//结束，非0表示异常终止
 System.currentTimeMillis()//返回当前时间（以毫秒为单位），1970年1月1日
 ```
 
+
+
 #### Object类
 
 toString()方法
@@ -382,13 +331,17 @@ toString()方法
 
 可以快捷打出类包含的内容
 
-equal()方法
+`clone()`
+
+默认是浅拷贝，需要实现`Cloneable`接口并重写clone函数
+
+`equal()方法`
 
 默认比地址，想要比较成员内容需要重写
 
 自动设置重写
 
-
+比较数组的适合使用java.util.Arrays 类中声明的 static boolean deepEquals(Object[] a1, Object[] a2) 方法来实现，因为数组无法重写。
 
  ### 各种类
 
@@ -624,17 +577,89 @@ super可以访问父类中的变量
 
 ### 抽象
 
+> 用abstract关键字来修饰一个类，这个类叫抽象类。
+>
+> 用abstract来修饰一个方法，该方法叫抽象方法。
+
 一个**没有方法体**的方法定义为**抽象方法**，如果**类**中有抽象方法则必须定义为**抽象类**
 
 修饰符：`abstract`
 
-抽象类的子类要么也是抽象类，要么要重写抽象方法
+Abstract不能修饰变量、代码块、构造函数；
+
+Abstract不能修饰私有方法、静态方法、final方法、final类；   
+
+抽象类不能被实例化，抽象类的子类要么也是抽象类，要么要重写抽象方法
 
 
 
 ### 接口
 
 实现comparable接口，使用comparaTo函数，这样才可以使用sort函数
+
+**公共规范标准**，**对行为的规范**
+
+#### 接口特点
+
+- 关键字：`interface`
+
+  - `public interface 接口名{}`
+
+  - ```java
+    [访问修饰符] interface 接口名称 [extends 其他的接口名] {
+            // 声明变量
+            // 抽象方法
+    }
+    ```
+
+    
+
+- 类实现接口限定词implements
+
+  - `public class implements 接口名{}`
+
+- 接口不能实例化
+
+  - 通过实现类对象实例化
+
+- 接口的实现类
+
+  - 要么是抽象类
+  - 要么重写所有抽象方法
+
+
+
+#### 接口成员特点：
+
+- 成员变量
+  - 默认且只能是常量
+  - 默认修饰符：`public static final`
+- 构造方法
+  - 接口没有构造方法
+  - 一个类如果没有父类，默认继承是Object类
+- 成员方法
+  - 只能是抽象方法
+  - 默认修饰符：`public abstract`
+
+
+
+#### 类和接口的关系
+
+- 类和类关系
+
+  继承关系，多层继承
+
+- 类和接口
+
+  实现关系，可以单实现，也可以多实现，也可以继承一个类的时候同时实现多个接口
+
+- 接口和接口关系
+
+  继承关系，可以单继承，也可以多继承
+
+
+
+自己总结一下：所有类基础的功能都在抽象类里面，而单独的功能或者以后添加的功能写在接口里面，因为可以添加多个接口，就可以实现一直添加功能
 
 
 
@@ -643,6 +668,8 @@ super可以访问父类中的变量
 程序出现了不正常情况
 
 
+
+#### 异常类别
 
 ![image-20220210092407781](pics/image-20220210092407781.png)
 
@@ -654,11 +681,14 @@ super可以访问父类中的变量
 
 - 格式
 
-```
+```java
 try{
-	可能出现的异常代码;
+    //可能出现的异常代码;
 } catch(异常类名 变量名) {
-	异常的处理代码;
+	//异常的处理代码;
+    System.err.println();//err是标准的错误输出流，out输出流可能会被缓存，err不会，且err只能输出到屏幕。
+}finally{
+    //无论是否有异常都会执行的内容
 }
 ```
 
@@ -1035,5 +1065,145 @@ ThreadLoal 变量，线程局部变量，同一个 ThreadLocal 所包含的对�
 
 
 
+### 多线程
 
+#### 多线程的创建
+
+1. 继承Thread类，重写run方法，调用start函数启动多线程
+
+   - 每个类只能调用一次start
+
+2. 实现`Runnable`接口，重写run方法
+
+   > 在 main 方法（线程）中，创建线程对象，并启动线程
+   >
+   > 　　　　　　创建线程类：Thread t = new Thread(new A类)；
+   >
+   > 　　　　　　调用 start() 方法启动线程：t.start();
+
+比较：
+
+> 继承Thread类
+>
+>   \- 易受JAVA单继承特点的限制；
+>
+>   \- 每个对象都是一个线程，均具有各自的成员变量。
+>
+> 实现Runnable接口
+>
+>   \- 对象可自由地继承自另一个类；
+>
+>   \- 对象不是线程，须将其作为参数传入Thread对象才能运行；
+>
+>   \- 线程间可共享同一个接口实现类的对象，更适合多个线程共享数据的情况。
+
+#### 主要函数
+
+```java
+void setName(String name)
+     //设置该线程名称。
+static  void  yield()
+     //暂停当前的执行线程，把执行机会让给优先级相同或更高的线程。
+final void join()
+     //当线程A中调用线程B的join() 方法时，线程A将被阻塞，直到线程B执行完为止，线程A才结束阻塞。
+static void sleep(long millitime)
+     //让当前线程“睡眠”指定的时长。在该时间内线程处于阻塞状态
+final void setPriority(int priority))
+     //设置当前线程的优先级。
+final int getPriority()    
+     //获取当前线程的优先级。
+final boolean isAlive()
+     //判断当前线程是否存活。
+```
+
+
+
+#### 锁
+
+#### **synchronized**同步锁
+
+可以用来修饰代码块或者函数
+
+
+
+#### **ReentrantLock**锁机制
+
+> java.util.concurrent.locks.Lock接口是控制多个线程对共享资源进行访问的工具。锁提供了对共享资源的独占访问，每次只能有一个线程对Lock对象锁，线程开始访问共享资源之前应先获得Lock对象。
+>
+> **ReentrantLock**类是Lock接口最常用的实现类，拥有与synchronized 相同的并发性和内存语义。
+
+实现方式：
+
+> 创建ReentrantLock对象，在同步方法中，调用 lock() 方法后，将同步代码块置于try中，然后在finally中调用 unlock()以防死锁
+
+
+
+优先使用顺序：
+
+   **Lock** > **同步代码块**（已经进入了方法体，分配了相应资源）   \> **同步方法**（在方法体之外）
+
+### IO操作
+
+**InputStream**和**Reader** 是所有输入流的基类
+
+程序中打开的文件IO 资源不属于内存里的资源，垃圾回收机制无法回收该资源，所以应该显式关闭文件IO 资源。
+
+
+
+#### File
+
+- 文件和文件目录路径的抽象表示形式，与平台无关。
+
+- File 能新建、删除、重命名文件和目录，但File 不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入/输出流。
+
+
+
+#### 缓冲流
+
+`BufferedInputStream`和`BufferedOutputStream`
+
+`BufferedReader`和`BufferedWriter`
+
+写入时会先存入缓冲区中，缓冲区满了才会放入文件中
+
+`flush`会强制刷新，写入文件
+
+`close`不仅会关闭文件，还会将缓冲区写入
+
+
+
+```java
+public void write(byte[] b,
+                  int offset,
+                  int length)
+            throws IOException
+```
+
+
+
+#### 转换流
+
+提供在字节流和字符流中间的转换
+
+##### InputStreamReader
+
+```java
+public InputStreamReader(InputStream in)
+public InputSreamReader(InputStream in, String charsetName)
+//构造函数
+```
+
+
+
+#### next和nextline
+
+next：
+
+- 要有效字符
+- 不能得到带有空格的字符串
+
+nextline：
+
+- 以enter结束
+- 可以得到空串
 

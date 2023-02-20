@@ -18,7 +18,7 @@ Java Virtual Machine
 
 `System.out.print(a);`没有空行
 
-float和long初始化要加F和L
+float和long初始化数字后要加F和L
 
 char,byte,short做加法时会类型提升到int
 
@@ -86,22 +86,6 @@ PrintWriter out = new PrintWriter("myfile.txt",StandardCharsets.UTF_8);
 分为堆内存和栈内存
 
 基本数据类型会在栈内存中存放，new新建立的类会在栈内存中新建一个地址，然后在堆内存中开辟一片空间，堆内存中还有常量池，用于存放静态变量以及string字符串
-
-
-
-#### 方法重载
-
-一个类中定义多个方法的关系
-
-- 多个方法在同一个类
-
-- 多个方法有同一个名称
-
-- 参数类型或数量不同
-
-
-
-
 
 
 
@@ -212,7 +196,7 @@ int[] copiedLucktNum = Array.copyOf(luckyNum,luckyNum.length*2);
 #### java函数的数据传递
 
 值传递的适用数据类型：
-1.八大基本数据类型（byte,short,int,long,char,float,double,boolean)
+1.八大基本数据类型（`byte,short,int,long,char,float,double,boolean`)
 2.String类型
 
 String数据类型在传递时会在堆内存中创建的常量池中，改变时不改变原数据地址指向的字符串
@@ -221,8 +205,7 @@ String数据类型在传递时会在堆内存中创建的常量池中，改变�
 
 引用传递：
 
-适用范围：
-除String以外的数据类型的对象
+适用范围：除String以外的数据类型的对象
 
 
 
@@ -230,7 +213,7 @@ String数据类型在传递时会在堆内存中创建的常量池中，改变�
 
 ##### 成员内部类
 
-###### 特点：
+**特点：**
 
 在一个类中创建另一个类
 
@@ -533,7 +516,7 @@ System.exit(0);//退出虚拟机
 
 #### 继承
 
-- 格式：public class 子类 extend 父类名{}
+- 格式：`public class 子类 extend 父类名{}`
 - 父类也被称为基类、超类
 - 子类也被称为派生类
 
@@ -569,9 +552,26 @@ super可以访问父类中的变量
 
 #### 多态
 
-编译看左边，执行看右边
+- 继承
+- 方法重写
 
-与重写和继承有关
+- 父类引用指向子类对象,如：Animal a = new Cat();
+
+
+- 多态中，编译看左边，运行看右边
+
+
+
+
+#### 方法重载
+
+一个类中定义多个方法的关系
+
+- 多个方法在同一个类
+
+- 多个方法有同一个名称
+
+- 参数类型或数量不同
 
 
 
@@ -585,17 +585,24 @@ super可以访问父类中的变量
 
 修饰符：`abstract`
 
-Abstract不能修饰变量、代码块、构造函数；
+- Abstract不能修饰变量、代码块、构造函数；
 
-Abstract不能修饰私有方法、静态方法、final方法、final类；   
 
-抽象类不能被实例化，抽象类的子类要么也是抽象类，要么要重写抽象方法
+- Abstract不能修饰私有方法、静态方法、final方法、final类；   
+
+
+- 抽象类不能被实例化，抽象类的子类要么也是抽象类，要么要重写抽象方法
+
+
+- 抽象类不一定有抽象方法，目的是为了不让用户实例化该类
+
+- 一定要有子类完全实现所有的抽象函数，否则无意义
+
+- 可以有构造方法，为了给子类初始化父类变量
 
 
 
 ### 接口
-
-实现comparable接口，使用comparaTo函数，这样才可以使用sort函数
 
 **公共规范标准**，**对行为的规范**
 
@@ -663,6 +670,12 @@ Abstract不能修饰私有方法、静态方法、final方法、final类；
 
 
 
+#### 常用接口
+
+实现comparable接口，使用comparaTo函数，这样才可以使用sort函数
+
+
+
 ### 异常
 
 程序出现了不正常情况
@@ -677,7 +690,7 @@ Abstract不能修饰私有方法、静态方法、final方法、final类；
 
 #### 异常处理：
 
-##### try...catch...
+##### try...catch...finally
 
 - 格式
 
@@ -743,6 +756,7 @@ throw
 
 #### Collection
 
+```java
 boolean add(E e):添加元素
 
 boolean remove(E e):移除元素
@@ -752,6 +766,8 @@ void clear:清除所有元素
 boolean contain(E e):判断有没有e元素
 
 boolean isEmpty:判断集合是否为空
+
+```
 
 
 
@@ -1008,49 +1024,13 @@ public static void shuffle(List<T> list):使用默认的随机源排序指定
 
 
 
-### File类
-
-封装的仅仅只是一个路径名
-
-File(String Pathname);
-
-File(String parent,String child)
-
-File(File parent,String child)
-
-
-
-#### File类的创建功能
-
-public boolean createNewFile();创建一个文件 不存在 创建文件 返回Ture 存在返回False
-
-没有对应文件夹不能创建文件
-
-public boolean mkdir();创建目录
-
-public boolean mkdirs();创建多级目录
-
-
-
-#### 删除功能
-
-public boolean delect():
-
-目录里面有文件不能够删除
-
-
-
-![image-20220312120339814](pics/image-20220312120339814.png)
-
-
-
 
 
 ### ThreadLocal
 
-ThreadLocal叫做线程变量，意思是ThreadLocal中填充的变量属于当前线程，该变量对其他线程而言是隔离的，也就是说该变量是当前线程独有的变量。ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。
+`ThreadLocal`叫做线程变量，意思是`ThreadLocal`中填充的变量属于当前线程，该变量对其他线程而言是隔离的，也就是说该变量是当前线程独有的变量。ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。
 
-ThreadLoal 变量，线程局部变量，同一个 ThreadLocal 所包含的对象，在不同的 Thread 中有不同的副本。这里有几点需要注意：
+ThreadLocal 变量，线程局部变量，同一个 ThreadLocal 所包含的对象，在不同的 Thread 中有不同的副本。这里有几点需要注意：
 
 - 因为每个 Thread 内有自己的实例副本，且该副本只能由当前 Thread 使用。这是也是 ThreadLocal 命名的由来。
 
@@ -1077,7 +1057,7 @@ ThreadLoal 变量，线程局部变量，同一个 ThreadLocal 所包含的对�
 
    > 在 main 方法（线程）中，创建线程对象，并启动线程
    >
-   > 　　　　　　创建线程类：Thread t = new Thread(new A类)；
+   > 　　　　　　**创建线程类：Thread t = new Thread(new A类)；**
    >
    > 　　　　　　调用 start() 方法启动线程：t.start();
 
@@ -1150,11 +1130,43 @@ final boolean isAlive()
 
 
 
-#### File
+#### File类
 
-- 文件和文件目录路径的抽象表示形式，与平台无关。
+封装的仅仅只是一个路径名
 
-- File 能新建、删除、重命名文件和目录，但File 不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入/输出流。
+File 能新建、删除、重命名文件和目录，但File 不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入/输出流。
+
+File(String Pathname);
+
+File(String parent,String child)
+
+File(File parent,String child)
+
+
+
+##### File类的创建功能
+
+public boolean createNewFile();创建一个文件，不存在则创建文件，返回Ture 存在返回False
+
+没有对应文件夹不能创建文件
+
+public boolean mkdir();创建目录
+
+public boolean mkdirs();创建多级目录
+
+
+
+##### 删除功能
+
+public boolean delect():
+
+目录里面有文件不能够删除
+
+
+
+![image-20220312120339814](pics/image-20220312120339814.png)
+
+
 
 
 

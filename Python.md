@@ -149,6 +149,134 @@ def person(name, age, *args, city, job):
 
 
 
+#### 列表生成式
+
+```python
+>>> [x * x for x in range(1, 11) if x % 2 == 0]
+[4, 16, 36, 64, 100]
+```
+
+通过这种方法可以创建一个列表，但是收到内存限制，列表的容量是有限的
+
+所以就需要生成器：generator
+
+#### 生成器
+
+第一种方法：
+
+```python
+>>> L = [x * x for x in range(10)]
+>>> L
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+>>> g = (x * x for x in range(10))
+>>> g
+<generator object <genexpr> at 0x1022ef630>
+```
+
+`generator`保存的是算法，而不是数据
+
+
+
+#### 函数式编程
+
+##### 高阶函数：
+
+###### map
+
+```python
+>>> def f(x):
+...     return x * x
+...
+>>> r = map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+>>> list(r)
+[1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+
+
+
+###### reduce
+
+```python
+>>> from functools import reduce
+>>> def add(x, y):
+...     return x + y
+...
+>>> reduce(add, [1, 3, 5, 7, 9])
+25
+```
+
+要求add函数接受两个变量
+
+```python
+reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
+```
+
+
+
+###### filter()
+
+**过滤器**
+
+```python
+def _odd_iter():
+    n=1;
+    while True:
+        n=n+2
+        yield n
+
+def _not_divisible(n):
+    return lambda x:x % n>0
+
+def primes():
+    yield 2
+    it = _odd_iter() # 初始序列
+    while True:
+        n = next(it) # 返回序列的第一个数
+        yield n
+        it = filter(_not_divisible(n), it) # 构造新序列
+
+for n in primes():
+    if n < 1000:
+        print(n)
+    else:
+        break
+```
+
+因为it是一个惰性序列，也是一个无限序列，我们无法在创建时就算出所有的结果
+
+> 那么我们可以理解，filter是可以将判断函数挂起的方法，可以暂时保存`_not_divisiable(n)`这个函数的内容，然后每次next之后会对结果运行这个函数
+
+
+
+###### sort
+
+```python
+>>> sorted([36, 5, -12, 9, -21], key=abs)
+[5, 9, -12, -21, 36]
+```
+
+`sort`函数中的`key`函数可以对每一个元素进行操作，之后再排序，比如上面代码中就是将所有元素转换为绝对值后再排序
+
+
+
+##### 返回函数
+
+```python
+def lazy_sum(*args):
+    def sum():
+        ax = 0
+        for n in args:
+            ax = ax + n
+        return ax
+    return sum
+```
+
+> 在这个例子中，我们在函数`lazy_sum`中又定义了函数`sum`，并且，内部函数`sum`可以**引用外部函数`lazy_sum`的参数*和局部变量，当`lazy_sum`返回函数`sum`时，相关参数和变量都保存在返回的函数中，这种称为“闭包（Closure）”的程序结构拥有极大的威力。
+
+**返回闭包时牢记一点：返回函数不要引用任何循环变量，或者后续会发生变化的变量。**
+
+
+
 ### 问题与解决
 
 1.vscode无法使用python

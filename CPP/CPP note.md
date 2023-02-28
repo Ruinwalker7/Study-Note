@@ -16,11 +16,34 @@ Microflop::wander("go dancing");
 Piscine::wander("a fish named Desire");
 ```
 
-使用 `using nameapcae std; `之后可以忽略using
+使用`using nameapcae std;`之后可以忽略using
+
+
 
 #### `cout`输出
 
-`endl`和 `\n`是等价的
+`endl`和`\n`是等价的
+
+
+
+##### cout.setf
+
+类似于控制符，有两者函数原型：
+
+```c++
+fmtflags setf(fmtflage) //第一原型
+fmtflags setf(fmtflags, fmtflags)  //第二原型
+//fmtflags 是 bitmask 类型(一种用来存储各个位值的类型)的 typedef 名
+//显而易见，两个原型的主要区别在于参数数量不同
+```
+
+
+
+##### `cout.precision(n)`
+
+控制小数位数
+
+
 
 ### 二、处理数据
 
@@ -32,11 +55,15 @@ Piscine::wander("a fish named Desire");
 
 `const int month = 12`这样可以用month来代替12，注意定义的时候初始化
 
+
+
 ### 三、复合类型
 
 #### 结构体
 
 如果初始化比成员少，余下的成员会被设置为0
+
+
 
 #### 字符串
 
@@ -49,6 +76,8 @@ Piscine::wander("a fish named Desire");
 ###### `get()`
 
 不舍弃\n，所以可以用 `cin.get(name,num).get()`来舍弃换行符
+
+
 
 #### string类
 
@@ -166,6 +195,8 @@ ios::trunc：　　	如果文件存在，把文件长度设为0
 
 `file1.close();`
 
+
+
 ### 四、循环结构
 
 `cout.self(ios_base::boolalpha);`此语句可以将真假输出为false和ture
@@ -217,7 +248,7 @@ while(cin)   //更好的写法
 
 ### 五、条件结构
 
-**可以用 `3==number`这种方法来避免赋值错误**
+**可以用`3==number`这种方法来避免赋值错误**
 
 #### 字符库函数cctype
 
@@ -251,6 +282,8 @@ outfile.close      //已经关联所以可以直接关闭
 
 `is_open`检测是否打开文件
 
+
+
 ### 六、函数
 
 #### 函数与结构
@@ -270,6 +303,8 @@ outfile.close      //已经关联所以可以直接关闭
 ##### 1.获取函数地址
 
 只要使用函数名，如果think()是一个函数，think就是该函数的地址
+
+
 
 ### 七、函数谈幽
 

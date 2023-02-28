@@ -18,7 +18,7 @@ Java Virtual Machine
 
 `System.out.print(a);`没有空行
 
-float和long初始化要加F和L
+float和long初始化数字后要加F和L
 
 char,byte,short做加法时会类型提升到int
 
@@ -89,22 +89,6 @@ PrintWriter out = new PrintWriter("myfile.txt",StandardCharsets.UTF_8);
 
 
 
-#### 方法重载
-
-一个类中定义多个方法的关系
-
-- 多个方法在同一个类
-
-- 多个方法有同一个名称
-
-- 参数类型或数量不同
-
-
-
-
-
-
-
 #### 包
 
 ##### 建包
@@ -164,59 +148,6 @@ cmd中 `javac -d . HelloWorld.java`
 
 
 
-#### 接口
-
-**公共规范标准**
-
-**对行为的规范**
-
-##### 接口特点
-
-- 关键字：`Interface`
-  - `public interface 接口名{}`
-
-- 类实现接口限定词implements
-  - public class implements 接口名{}
-- 接口不能实例化
-  - 通过实现类对象实例化
-- 接口的实现类
-  - 要么是抽象类
-  - 要么重写所有抽象方法
-
-
-
-##### 接口成员特点：
-
-- 成员变量
-  - 只能是常量
-  - 默认修饰符：`public static final`
-- 构造方法
-  - 接口没有构造方法
-  - 一个类如果没有父类，默认继承是Object类
-- 成员方法
-  - 只能是抽象方法
-  - 默认修饰符：`public abstract`
-
-
-
-##### 类和接口的关系
-
-- 类和类关系
-
-  继承关系，多层继承
-
-- 类和接口
-
-  实现关系，可以单实现，也可以多实现，也可以继承一个类的时候同时实现多个接口
-
-- 接口和接口关系
-
-  继承关系，可以单继承，也可以多继承
-
-
-
-自己总结一下：所有类基础的功能都在抽象类里面，而单独的功能或者以后添加的功能写在接口里面，因为可以添加多个接口，就可以实现一直添加功能
-
 
 
 #### break
@@ -265,7 +196,7 @@ int[] copiedLucktNum = Array.copyOf(luckyNum,luckyNum.length*2);
 #### java函数的数据传递
 
 值传递的适用数据类型：
-1.八大基本数据类型（byte,short,int,long,char,float,double,boolean)
+1.八大基本数据类型（`byte,short,int,long,char,float,double,boolean`)
 2.String类型
 
 String数据类型在传递时会在堆内存中创建的常量池中，改变时不改变原数据地址指向的字符串
@@ -274,8 +205,7 @@ String数据类型在传递时会在堆内存中创建的常量池中，改变�
 
 引用传递：
 
-适用范围：
-除String以外的数据类型的对象
+适用范围：除String以外的数据类型的对象
 
 
 
@@ -283,7 +213,7 @@ String数据类型在传递时会在堆内存中创建的常量池中，改变�
 
 ##### 成员内部类
 
-###### 特点：
+**特点：**
 
 在一个类中创建另一个类
 
@@ -374,6 +304,8 @@ System.exit(0);//结束，非0表示异常终止
 System.currentTimeMillis()//返回当前时间（以毫秒为单位），1970年1月1日
 ```
 
+
+
 #### Object类
 
 toString()方法
@@ -382,13 +314,17 @@ toString()方法
 
 可以快捷打出类包含的内容
 
-equal()方法
+`clone()`
+
+默认是浅拷贝，需要实现`Cloneable`接口并重写clone函数
+
+`equal()方法`
 
 默认比地址，想要比较成员内容需要重写
 
 自动设置重写
 
-
+比较数组的适合使用java.util.Arrays 类中声明的 static boolean deepEquals(Object[] a1, Object[] a2) 方法来实现，因为数组无法重写。
 
  ### 各种类
 
@@ -580,7 +516,7 @@ System.exit(0);//退出虚拟机
 
 #### 继承
 
-- 格式：public class 子类 extend 父类名{}
+- 格式：`public class 子类 extends 父类名{}`
 - 父类也被称为基类、超类
 - 子类也被称为派生类
 
@@ -616,23 +552,125 @@ super可以访问父类中的变量
 
 #### 多态
 
-编译看左边，执行看右边
+- 继承
+- 方法重写
 
-与重写和继承有关
+- 父类引用指向子类对象,如：Animal a = new Cat();
+
+
+- 多态中，编译看左边，运行看右边
+
+
+
+
+#### 方法重载
+
+一个类中定义多个方法的关系
+
+- 多个方法在同一个类
+
+- 多个方法有同一个名称
+
+- 参数类型或数量不同
 
 
 
 ### 抽象
 
+> 用abstract关键字来修饰一个类，这个类叫抽象类。
+>
+> 用abstract来修饰一个方法，该方法叫抽象方法。
+
 一个**没有方法体**的方法定义为**抽象方法**，如果**类**中有抽象方法则必须定义为**抽象类**
 
 修饰符：`abstract`
 
-抽象类的子类要么也是抽象类，要么要重写抽象方法
+- Abstract不能修饰变量、代码块、构造函数；
+
+
+- Abstract不能修饰私有方法、静态方法、final方法、final类；   
+
+
+- 抽象类不能被实例化，抽象类的子类要么也是抽象类，要么要重写抽象方法
+
+
+- 抽象类不一定有抽象方法，目的是为了不让用户实例化该类
+
+- 一定要有子类完全实现所有的抽象函数，否则无意义
+
+- 可以有构造方法，为了给子类初始化父类变量
 
 
 
 ### 接口
+
+**公共规范标准**，**对行为的规范**
+
+#### 接口特点
+
+- 关键字：`interface`
+
+  - `public interface 接口名{}`
+
+  - ```java
+    [访问修饰符] interface 接口名称 [extends 其他的接口名] {
+            // 声明变量
+            // 抽象方法
+    }
+    ```
+
+    
+
+- 类实现接口限定词implements
+
+  - `public class implements 接口名{}`
+
+- 接口不能实例化
+
+  - 通过实现类对象实例化
+
+- 接口的实现类
+
+  - 要么是抽象类
+  - 要么重写所有抽象方法
+
+
+
+#### 接口成员特点：
+
+- 成员变量
+  - 默认且只能是常量
+  - 默认修饰符：`public static final`
+- 构造方法
+  - 接口没有构造方法
+  - 一个类如果没有父类，默认继承是Object类
+- 成员方法
+  - 只能是抽象方法
+  - 默认修饰符：`public abstract`
+
+
+
+#### 类和接口的关系
+
+- 类和类关系
+
+  继承关系，多层继承
+
+- 类和接口
+
+  实现关系，可以单实现，也可以多实现，也可以继承一个类的时候同时实现多个接口
+
+- 接口和接口关系
+
+  继承关系，可以单继承，也可以多继承
+
+
+
+自己总结一下：所有类基础的功能都在抽象类里面，而单独的功能或者以后添加的功能写在接口里面，因为可以添加多个接口，就可以实现一直添加功能
+
+
+
+#### 常用接口
 
 实现comparable接口，使用comparaTo函数，这样才可以使用sort函数
 
@@ -644,21 +682,26 @@ super可以访问父类中的变量
 
 
 
+#### 异常类别
+
 ![image-20220210092407781](pics/image-20220210092407781.png)
 
 
 
 #### 异常处理：
 
-##### try...catch...
+##### try...catch...finally
 
 - 格式
 
-```
+```java
 try{
-	可能出现的异常代码;
+    //可能出现的异常代码;
 } catch(异常类名 变量名) {
-	异常的处理代码;
+	//异常的处理代码;
+    System.err.println();//err是标准的错误输出流，out输出流可能会被缓存，err不会，且err只能输出到屏幕。
+}finally{
+    //无论是否有异常都会执行的内容
 }
 ```
 
@@ -713,6 +756,7 @@ throw
 
 #### Collection
 
+```java
 boolean add(E e):添加元素
 
 boolean remove(E e):移除元素
@@ -722,6 +766,8 @@ void clear:清除所有元素
 boolean contain(E e):判断有没有e元素
 
 boolean isEmpty:判断集合是否为空
+
+```
 
 
 
@@ -978,49 +1024,13 @@ public static void shuffle(List<T> list):使用默认的随机源排序指定
 
 
 
-### File类
-
-封装的仅仅只是一个路径名
-
-File(String Pathname);
-
-File(String parent,String child)
-
-File(File parent,String child)
-
-
-
-#### File类的创建功能
-
-public boolean createNewFile();创建一个文件 不存在 创建文件 返回Ture 存在返回False
-
-没有对应文件夹不能创建文件
-
-public boolean mkdir();创建目录
-
-public boolean mkdirs();创建多级目录
-
-
-
-#### 删除功能
-
-public boolean delect():
-
-目录里面有文件不能够删除
-
-
-
-![image-20220312120339814](pics/image-20220312120339814.png)
-
-
-
 
 
 ### ThreadLocal
 
-ThreadLocal叫做线程变量，意思是ThreadLocal中填充的变量属于当前线程，该变量对其他线程而言是隔离的，也就是说该变量是当前线程独有的变量。ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。
+`ThreadLocal`叫做线程变量，意思是`ThreadLocal`中填充的变量属于当前线程，该变量对其他线程而言是隔离的，也就是说该变量是当前线程独有的变量。ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。
 
-ThreadLoal 变量，线程局部变量，同一个 ThreadLocal 所包含的对象，在不同的 Thread 中有不同的副本。这里有几点需要注意：
+ThreadLocal 变量，线程局部变量，同一个 ThreadLocal 所包含的对象，在不同的 Thread 中有不同的副本。这里有几点需要注意：
 
 - 因为每个 Thread 内有自己的实例副本，且该副本只能由当前 Thread 使用。这是也是 ThreadLocal 命名的由来。
 
@@ -1035,5 +1045,179 @@ ThreadLoal 变量，线程局部变量，同一个 ThreadLocal 所包含的对�
 
 
 
+### 多线程
 
+#### 多线程的创建
+
+1. 继承Thread类，重写run方法，调用start函数启动多线程
+
+   - 每个类只能调用一次start
+
+2. 实现`Runnable`接口，重写run方法
+
+   > 在 main 方法（线程）中，创建线程对象，并启动线程
+   >
+   > 　　　　　　**创建线程类：Thread t = new Thread(new A类)；**
+   >
+   > 　　　　　　调用 start() 方法启动线程：t.start();
+
+比较：
+
+> 继承Thread类
+>
+>   \- 易受JAVA单继承特点的限制；
+>
+>   \- 每个对象都是一个线程，均具有各自的成员变量。
+>
+> 实现Runnable接口
+>
+>   \- 对象可自由地继承自另一个类；
+>
+>   \- 对象不是线程，须将其作为参数传入Thread对象才能运行；
+>
+>   \- 线程间可共享同一个接口实现类的对象，更适合多个线程共享数据的情况。
+
+#### 主要函数
+
+```java
+void setName(String name)
+     //设置该线程名称。
+static  void  yield()
+     //暂停当前的执行线程，把执行机会让给优先级相同或更高的线程。
+final void join()
+     //当线程A中调用线程B的join() 方法时，线程A将被阻塞，直到线程B执行完为止，线程A才结束阻塞。
+static void sleep(long millitime)
+     //让当前线程“睡眠”指定的时长。在该时间内线程处于阻塞状态
+final void setPriority(int priority))
+     //设置当前线程的优先级。
+final int getPriority()    
+     //获取当前线程的优先级。
+final boolean isAlive()
+     //判断当前线程是否存活。
+```
+
+
+
+#### 锁
+
+#### **synchronized**同步锁
+
+可以用来修饰代码块或者函数
+
+
+
+#### **ReentrantLock**锁机制
+
+> java.util.concurrent.locks.Lock接口是控制多个线程对共享资源进行访问的工具。锁提供了对共享资源的独占访问，每次只能有一个线程对Lock对象锁，线程开始访问共享资源之前应先获得Lock对象。
+>
+> **ReentrantLock**类是Lock接口最常用的实现类，拥有与synchronized 相同的并发性和内存语义。
+
+实现方式：
+
+> 创建ReentrantLock对象，在同步方法中，调用 lock() 方法后，将同步代码块置于try中，然后在finally中调用 unlock()以防死锁
+
+
+
+优先使用顺序：
+
+   **Lock** > **同步代码块**（已经进入了方法体，分配了相应资源）   \> **同步方法**（在方法体之外）
+
+
+
+### IO操作
+
+**InputStream**和**Reader** 是所有输入流的基类
+
+程序中打开的文件IO 资源不属于内存里的资源，垃圾回收机制无法回收该资源，所以应该显式关闭文件IO 资源。
+
+
+
+#### File类
+
+封装的仅仅只是一个路径名
+
+File 能新建、删除、重命名文件和目录，但File 不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入/输出流。
+
+File(String Pathname);
+
+File(String parent,String child)
+
+File(File parent,String child)
+
+
+
+##### File类的创建功能
+
+public boolean createNewFile();创建一个文件，不存在则创建文件，返回Ture 存在返回False
+
+没有对应文件夹不能创建文件
+
+public boolean mkdir();创建目录
+
+public boolean mkdirs();创建多级目录
+
+
+
+##### 删除功能
+
+public boolean delect():
+
+目录里面有文件不能够删除
+
+
+
+![image-20220312120339814](pics/image-20220312120339814.png)
+
+
+
+
+
+#### 缓冲流
+
+`BufferedInputStream`和`BufferedOutputStream`
+
+`BufferedReader`和`BufferedWriter`
+
+写入时会先存入缓冲区中，缓冲区满了才会放入文件中
+
+`flush`会强制刷新，写入文件
+
+`close`不仅会关闭文件，还会将缓冲区写入
+
+
+
+```java
+public void write(byte[] b,
+                  int offset,
+                  int length)
+            throws IOException
+```
+
+
+
+#### 转换流
+
+提供在字节流和字符流中间的转换
+
+##### InputStreamReader
+
+```java
+public InputStreamReader(InputStream in)
+public InputSreamReader(InputStream in, String charsetName)
+//构造函数
+```
+
+
+
+#### next和nextline
+
+next：
+
+- 要有效字符
+- 不能得到带有空格的字符串
+
+nextline：
+
+- 以enter结束
+- 可以得到空串
 

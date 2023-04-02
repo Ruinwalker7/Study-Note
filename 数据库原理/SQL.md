@@ -1,4 +1,6 @@
-# MySQL
+# SQL
+
+
 
 ```mysql
 show databases;
@@ -8,7 +10,7 @@ use bjpower;
 
 
 
-语句
+### 基础
 
 ```sql
 SELECT * FROM name;//查询所有字段，不要用，可读性差，效率低
@@ -18,10 +20,16 @@ VALUES(1002.'TOM');
 select name,sexe from TABLE_NAME;
 //起别名，不进行修改
 select name ,sexe as sexes from table_name;
-//字符串以单引号作为标准，Oracle里面z
+//字符串以单引号作为标准，Oracle里面
 ```
 
 字段可以参加加减乘除运算
+
+#### distinct关键字
+
+select distinct job from emp;
+
+distinct只能出现在所有字段的最前方，表示联合起来去除重复记录
 
 
 
@@ -54,7 +62,7 @@ where
 
 **and和or同时出现，and的优先级比or高，加括号改变优先级**
 
-- in 包含，相当于范围
+- in 包含，相当于范围 	
 
 ```mysql
 select * from emp where job = 'Manager' or job = 'Salesman';
@@ -99,49 +107,17 @@ order by
 
 
 
-### 处理函数
+### 模糊查询
 
-#### 单行处理函数
-
-​	lower()换小写
-
-​	upper()换大写
-
-​	substr()取子串 substr(被截取的字符串，开始位置，长度)
-
-​	concat()字符串拼接
-
-​	trim()去空格
-
-​	str_to_date 把字符串转换为日期
-
-​	round四舍五入(round(被操作数，保留位数)保留位数如果为负，就是保留整数部分)
-
-​	rand() 生成随机数默认小数，配合乘法和round可以构造
-
-​	ifnull 将null转换为具体值
-
-​		ifnull(数据，当成的值)
-
-​	case ... when ... then ... when ... then ... else ... end 条件处理，类似switch 
+``` sql
+WHERE name LIKE '%k' #以k结尾的串
+WHERE name LIKE '%oo%' #包含oo的元素
+WHERE name LIKE '_oogle' #除了第一个字母，后面为oogle的
+```
 
 
 
-#### 多行处理函数（分组函数 最后输出一行）
 
-##### 	max
-
-##### 	min
-
-##### 	count
-
-count(具体字段) 统计具体字段下不为null的行数
-
-count(*) 统计所有个数
-
-##### 	sum
-
-​	
 
 ### *分组查询
 
@@ -159,25 +135,7 @@ count(*) 统计所有个数
 		//能使用where别用having，除非如判断平均值的大小，才选择用where
 ```
 
-关键词顺序：
-
-from
-
-where
-
-group by
-
-select
-
-order by
-
-
-
-### distinct关键字
-
-select distinct job from emp;
-
-distinct只能出现在所有字段的最前方，表示联合起来去除重复记录
+**`group by`出现的情况下，`select`里面的字段一定要出现在`group by`中**
 
 
 
@@ -307,7 +265,14 @@ LIMIT 1;
 
 
 
-### limit
+### 选择最前面几行
+
+```sql
+SELECT TOP 10 #sql server用法
+LIMIT 5 #mysql 用法
+```
+
+
 
 限制查询数量，分页查询使用
 
@@ -352,3 +317,59 @@ insert into 表名(字段1，字段2，字段3...) values(值1，值2，值3)
 **一一对应**
 
 insert语句只插入，执行后一定添加一条记录
+
+
+
+
+
+### SQL函数
+
+`having`函数：
+
+出现的原因是where语句不能够和合计函数一起使用
+
+
+
+### 处理函数
+
+#### 单行处理函数
+
+​	lower()换小写
+
+​	upper()换大写
+
+​	substr()取子串 substr(被截取的字符串，开始位置，长度)
+
+​	concat()字符串拼接
+
+​	trim()去空格
+
+​	str_to_date 把字符串转换为日期
+
+​	round四舍五入(round(被操作数，保留位数)保留位数如果为负，就是保留整数部分)
+
+​	rand() 生成随机数默认小数，配合乘法和round可以构造
+
+​	ifnull 将null转换为具体值
+
+​		ifnull(数据，当成的值)
+
+​	case ... when ... then ... when ... then ... else ... end 条件处理，类似switch 
+
+
+
+#### 多行处理函数（分组函数 最后输出一行）
+
+##### 	max
+
+##### 	min
+
+##### 	count
+
+count(具体字段) 统计具体字段下不为null的行数
+
+count(*) 统计所有个数
+
+##### 	sum
+
+​	

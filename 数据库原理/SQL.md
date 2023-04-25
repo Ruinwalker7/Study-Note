@@ -1,6 +1,6 @@
 # SQL
 
-
+## DQL语句
 
 ```mysql
 show databases;
@@ -278,50 +278,6 @@ LIMIT 5 #mysql 用法
 
 限制的优先级最后
 
-
-
-### 表的操作
-
-#### 创建
-
-create table 表名(字段名1 数据类型，字段名2 数据类型，字段名3 数据类型)
-
-default语句可以设置默认值
-
-#### 数据类型
-
-varchar
-
-char
-
-int
-
-bigint
-
-float
-
-date
-
-datetime
-
-
-
-#### 删除表：
-
-drop table if exist t_student //表不存在的时候也不会报错
-
-#### 插入
-
-insert into 表名(字段1，字段2，字段3...) values(值1，值2，值3)
-
-**一一对应**
-
-insert语句只插入，执行后一定添加一条记录
-
-
-
-
-
 ### SQL函数
 
 `having`函数：
@@ -372,4 +328,60 @@ count(*) 统计所有个数
 
 ##### 	sum
 
-​	
+
+
+## DML语句
+
+### 删除数据
+
+```sql
+DELETE 表名 #删除所有数据
+D
+```
+
+
+
+
+
+## DDL操作
+
+### 创建
+
+create table 表名(字段名1 数据类型，字段名2 数据类型，字段名3 数据类型)
+
+default语句可以设置默认值
+
+### 数据类型
+
+varchar
+
+char
+
+int
+
+bigint
+
+float
+
+date
+
+datetime
+
+
+
+### 删除表：
+
+drop table if exist t_student //表不存在的时候也不会报错
+
+### 插入
+
+insert into 表名(字段1，字段2，字段3...) values(值1，值2，值3)
+
+**一一对应**
+
+insert语句只插入，执行后一定添加一条记录
+
+
+
+
+

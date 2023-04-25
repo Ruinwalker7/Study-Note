@@ -105,8 +105,6 @@ order by
 //顺序不能改变
 ```
 
-
-
 ### 模糊查询
 
 ``` sql
@@ -336,10 +334,38 @@ count(*) 统计所有个数
 
 ```sql
 DELETE 表名 #删除所有数据
-D
+DELETE sales WHERE title_id IN 
+(SELECT title_id  FROM titles WHERE type = 'business')
 ```
 
+### 插入数据
 
+```sql
+INSERT [INTO] 表名[(字段名[,字段名]...)]  VALUES(常量[,常量]...) 
+```
+
+- 如果没指定列的列表，值的顺序必须与表或视图中的列顺序一致
+- 列表中**没有指定的所有列**都必须**允许 NULL值或者指定的默认值**等。也就是如果定义了字段列表，表中有些字段在插入语句中没有出现,则在这些字段上的值取空值NULL或默认值
+
+如果插入值为空的四种情况
+
+- 具有 IDENTITY 属性的标识列。使用下一个增量标识值。
+- 有默认值。使用列的默认值。
+- 具有 timestamp 数据类型。使用当前的时间戳值。
+- 是可空的。使用空值。 
+
+
+
+使用SELECT子查询可以将其他表的的值添加进入当前表，注意字段匹配
+
+
+
+### 更新数据
+
+更改表中的现有数据
+语法：``UPDATE table_or_view SET column_name = expression [FROM table_source] WHERE search_condition``
+
+如果没有WHERE语句则可能将所有列更新
 
 
 
@@ -375,13 +401,31 @@ drop table if exist t_student //表不存在的时候也不会报错
 
 ### 插入
 
-insert into 表名(字段1，字段2，字段3...) values(值1，值2，值3)
+INSERT into 表名(字段1，字段2，字段3...) values(值1，值2，值3)
 
 **一一对应**
 
-insert语句只插入，执行后一定添加一条记录
+INSERT语句只插入，执行后一定添加一条记录
 
 
 
 
+
+## 查询过程（函数）
+
+```sql
+CREATE PROCEDURE [dbo].[p_second]
+	@authorName varchar(100)
+AS
+BEGIN
+	SELECT t.title,t.price,p.pub_name
+	FROM titleauthor ta 
+	INNER JOIN titles t ON t.title_id=ta.title_id 
+	INNER JOIN authors a ON a.au_id = ta.au_id
+	INNER JOIN publishers p ON t.pub_id = p.pub_id
+	WHERE a.au_lname = @authorName or a.au_fname = @authorName
+END
+```
+
+`CREATE PROCEDURE`和`ALTER PROCEDURE`的区别是一个是创造函数一个是修改函数
 

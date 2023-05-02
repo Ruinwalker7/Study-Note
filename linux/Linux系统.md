@@ -89,3 +89,140 @@ Linux是一个分时多用户多系统的操作系统，任何要使用系统资
 
 参数: [username]
 
+
+
+
+
+## 进程管理
+
+### Linux系统进程调用
+
+**进程创建：**
+
+```c
+#include <unistd.h>
+pid_t fork(void);
+```
+
+- fork()调用一次但是返回两次，子进程返回0，父进程返回子进程ID
+
+- 子进程获得父进程所有资源的副本，但是并不共享
+
+**获取ID：**
+
+```c
+ #include <unistd.h>
+ pid_t getpid(void); //该进程的ID
+ pid_t getppid(void); //该进程父进程的ID
+```
+
+**进程退出：**
+
+```c
+#include <unistd.h>
+void _exit(int status);
+void exit(int *status);
+```
+
+exit()会处理缓冲区内容，正常结束程序
+
+_exit()会立即结束程序，不管理IO内容
+
+
+
+**等待进程结束：**
+
+```c
+#include <sys/types.h>
+#include <sys/wait.h>
+pid_t wait(int *status);
+```
+
+- 返回值为子进程pid号
+- status为子进程结束状态
+
+
+
+```c
+pid_t waitpid(pid_t pid, int *status, int options);
+```
+
+- pid<-1时等待pid绝对值的进程结束，pid=-1时等待任何子进程结束，pid=0时等待进程组识别码与目前进程相同的任何子进程。 pid>0 等待任何子进程识别码为 pid 的子进程。
+- 执行成功返回子进程PID，失败返回-1
+
+
+
+**僵死进程**
+
+- 在一个进程调用了exit之后，该进程并非马上就消失掉，而是留下一个称为僵尸进程（Zombie）的数据结构。
+- 几乎放弃了所有内存，仅保留一些基本信息
+- 当一个进程已退出，但其父进程还没有调用系统调用wait（稍后介绍）对其进行收集之前的这段时间里，它会一直保持僵尸状态
+
+
+
+**进程组ID**
+
+```c
+# include <unistd.h>
+pid_t getpgid( pid_t pid);
+pid_t getpgrp(void);  //取得当前进程的进程组ID
+int setpgid(pid_t pid,pid_t pgid); //设置pid的进程组ID为pgid
+```
+
+- 用来取得参数 pid 指定进程所属的组识别码。如果参数 pid 为 0，则会取得目前进程的组识别码。
+
+- 执行成功则返回组识别码，如果有错误则返回-1，错误原因存于 errno 中。
+
+
+
+### Linux系统通信调用
+
+常见信号
+
+```c
+SIGINT //中断信号
+SIGALRM //接收alarm信号
+```
+
+
+
+**信号处理：**
+
+- 忽略信号
+- 调用默认处理
+- 捕获信号：自定义处理方式
+
+
+
+**信号的产生：**
+
+```c
+int raise( int sig );
+```
+
+- 给自己一个信号
+
+```c
+unisigned int  alarm( unsigned int seconds ); 
+```
+
+- 功能:在seconds秒后向自己发送一个SIGALRM信号
+
+```c
+int kill( pid_t pid,  int sig ); 
+```
+
+- 功能:发送一个信号给进程或者进程组
+
+- 参数：pid:进程或进程组id，sig:信号标识
+
+
+
+**信号的捕获和处理：**
+
+```c
+#include<signal.h>
+void (*signal(int sig,void (*func)(int)))(int)
+```
+
+- 返回一个函数指针

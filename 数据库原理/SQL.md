@@ -429,3 +429,13 @@ END
 
 `CREATE PROCEDURE`和`ALTER PROCEDURE`的区别是一个是创造函数一个是修改函数
 
+
+
+## 触发器
+
+功能：
+
+强化约束
+
+跟踪变化
+

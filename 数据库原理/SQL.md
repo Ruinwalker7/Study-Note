@@ -439,3 +439,33 @@ END
 
 跟踪变化
 
+
+
+## 游标
+
+概念：一种处理数据的方法，具有对结果集进行逐行处理的能力
+
+
+
+游标的实现功能
+
+- 允许对 SELECT 返回的表中的每一行进行相同或不同的操作，而不是一次对整个结果集进行同一种操作；
+- 从表中的当前位置检索一行或多行数据；
+- 游标允许应用程序对当前位置的数据进行修改、删除的能力；
+- 对于不同用户对结果集包含的数据所做的修改，支持不同的可见性级别；
+- 提供脚本、存储过程、触发器中用于访问结果集中的数据的语句。
+  
+
+声明：
+
+```sql
+DECLARE 游标名称 CURSOR       
+[ LOCAL | GLOBAL ]                          --游标的作用域
+[ FORWORD_ONLY | SCROLL ]                     --游标的移动方向
+[ STATIC | KEYSET | DYNAMIC | FAST_FORWARD ]        --游标的类型
+[ READ_ONLY | SCROLL_LOCKS | OPTIMISTIC ]          --游标的访问类型
+[ TYPE_WARNING]                            --类型转换警告语句
+FOR SELECT 语句                            --SELECT查询语句
+[ FOR { READ ONLY | UPDATE [OF 列名称]}][,...n]      --可修改的列
+```
+

@@ -387,7 +387,7 @@ int
 
 bigint
 
-float
+double
 
 date
 

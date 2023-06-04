@@ -45,6 +45,12 @@ torch.normal(means, std, out=None)
 
 
 
+### torch.matmul()
+
+张量乘法，如果维数不统一，就会将低维的扩展
+
+
+
 ### torch.nn.Sequential()
 
 当一个模型较简单的时候，我们可以使用torch.nn.Sequential类来实现简单的顺序连接模型。

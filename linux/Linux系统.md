@@ -269,3 +269,63 @@ int pipe(int fd[2]);
 - 管道的两个描述字fdes[0]和fdes[1]是同时打开的。使用fork()创建子进程后，文件描述符被继承。这样，父进程从fd[1]写入的数据，子进程就可以从fd[0]中读出。
 - 如果父进程创建两个子进程，都继承管道的描述符，两个子进程也可通过无名管道交换数据。一般的，有共同祖先的进程就有机会从同一个祖先继承这个祖先创建的无名管道的描述符，从而互相间通过无名管道通信。
 - **fork()以后父子进程关闭不再需要的文件描述符。**
+
+
+
+
+
+## 文件管理
+
+程序在开始读写一个文件的内容前，必须在程序和文件之间建立**连接或通信通道**
+
+UNIX中使用以下描述：
+
+- 文件描述符
+- 流
+
+
+
+文件描述符表示为int类型的对象。例如标准输入对应文件描述符0，标准输出对应文件描述符1。
+
+而流则表示为指向结构FILE的指针FILE* ，因此流也称为“文件指针”
+
+对设备进行操作或特殊方式进行I/O操作时，必须使用文件描述符方式
+
+
+
+```c++
+
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+//返回文件描述符，此方法只能写
+int creat(const char* filename,int flags[,mode_t mode]); 
+int link(const char* name1,const char* name2);
+int unlink(const char* name);
+
+//打开文件
+int open(const char* filename,int flags[,mode_t mode]);
+flag：取值：O_RDONLY(为只读而打开文件) ,O_WRONLY(为只写而打开文件),O_RDWR(为可读可写而打开文件),O_APPEND(文件位置移至文件尾，所有write操作写数据至文件尾部）
+//关闭文件                                  
+int close (int filedes);
+
+//移动文件指针位置
+off_t lseek(int filedes，off_t offset,int origin);
+long int tell(int fd)
+
+//加锁
+int lockf(int filedes，int func,off_t size);
+
+```
+
+
+
+
+
+## Linux进程描述与控制
+
+Linux中进程有一个`task_struct`结构描述
+
+该结构描述了进程的状态
+
+   **Linux内核用task_struct->state表示进程状态**

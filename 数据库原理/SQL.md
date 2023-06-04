@@ -411,6 +411,17 @@ INSERT语句只插入，执行后一定添加一条记录
 
 
 
+## 视图
+
+```sql
+CREATE VIEW [title_view] (name1,name2,...) AS 
+SELECT [字段1] [字段2] ..
+FROM [表名]
+WHERE ...
+```
+
+
+
 ## 查询过程（函数）
 
 ```sql

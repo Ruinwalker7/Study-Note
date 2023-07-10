@@ -174,14 +174,14 @@ select * from emp where name like '_R%';
 
 先分组：
 
-```mysql
+```sql
 	select
 		...//分组字段可以写，然后是分组函数
 	from
 		...
 	group by
 		...//先分组在使用分组函数
-	having//必须连在group by后面
+	having #必须连在group by后面
 		...//判断语句
 		//能使用where别用having，除非如判断平均值的大小，才选择用where
 ```
@@ -324,7 +324,7 @@ on
 
 （2）右连接：右连接是只要右边表中有记录，数据就能检索出来
 
-（3）全连接：FULL OUTER JOIN 左右都显示出来
+（3）全连接：FULL OUTER JOIN 左右都显示出来，有连接的合并
 
 ```mysql
 select
@@ -416,7 +416,15 @@ INSERT [INTO] 表名(字段名,字段名...)  VALUES(常量[,常量]...)
 
 create table 表名(字段名1 数据类型，字段名2 数据类型，字段名3 数据类型)
 
-default语句可以设置默认值
+`PRIMARY KEY`设置主键
+
+`REFEREBCES`设置外键
+
+`UNIQUE`设置唯一
+
+`default`语句可以设置默认值
+
+`NOT NULL`不为空
 
 ### 数据类型
 
@@ -452,6 +460,8 @@ INSERT语句只插入，执行后一定添加一条记录
 
 ## 视图
 
+虚拟表，由查询内容定义
+
 ```sql
 CREATE VIEW [title_view] (name1,name2,...) AS 
 SELECT [字段1] [字段2] ..
@@ -481,6 +491,51 @@ END
 
 
 
+```sql
+Alter PROCEDURE p_third
+   @inputbegin datetime = '1994-9-1',
+   @inputend datetime = '1994-10-1',
+   @outputcount int OUTPUT,
+   @outputsum   int OUTPUT
+AS
+BEGIN
+ 
+  DECLARE @mycontrol int
+  SET @mycontrol =  (SELECT count(*) FROM sales WHERE ord_date between @inputbegin and @inputend)
+
+  SET @outputcount =  (SELECT count(*) FROM sales WHERE ord_date between @inputbegin and @inputend)
+  SET @outputsum =  (SELECT sum(qty) FROM sales WHERE ord_date between @inputbegin and @inputend)
+
+  IF @mycontrol > 0
+  BEGIN
+	SELECT title,ord_date,qty FROM Sales inner join titles 
+	on (sales.title_id = titles.title_id)
+	WHERE ord_date between @inputbegin and @inputend
+  END 
+  ELSE
+  BEGIN
+	SELECT TOP 3 title,ord_date,qty FROM Sales inner join titles 
+	on (sales.title_id = titles.title_id)
+	ORDER BY ord_date DESC
+
+	SET @outputcount =  3
+    SET @outputsum = -1
+
+  END
+END
+
+---
+DECLARE
+  @getoutputcount int,
+  @getoutputsum int
+
+EXEC p_third '1994-9-20', '1994-10-1', @getoutputcount OUTPUT, @getoutputsum OUTPUT
+
+SELECT @getoutputcount, @getoutputsum
+```
+
+
+
 ## 触发器
 
 功能：
@@ -488,6 +543,72 @@ END
 强化约束
 
 跟踪变化
+
+```sql
+create trigger t_DelAAADoDetail
+ON AAA
+FOR Delete
+AS
+print('Just Now You Del a Recorder of AAA table')
+
+Declare
+   @title varchar(80)
+
+SET @title = (SELECT title FROM deleted)
+
+PRINT '" ' + @title + ' " : is your just del book name '
+```
+
+
+
+## 索引
+
+- 加速检索
+- 为表或者视图中
+
+数据结构：B树结构
+
+> 簇索引和非簇索引。（又叫做群集索引和非群集索引）
+
+簇索引：
+
+把相邻的数据在物理结构上也放在一起，适合范围搜索
+
+PS：
+
+1. 只允许有一个簇索引，因为物理数据只有一种排列方式
+2. 需要空间
+3. 默认是非簇索引
+4. 主键比较合适
+
+
+
+非簇索引：
+
+- 非簇索引的结构类似于簇索引，但是表的数据不存储在索引的叶节点上，表的数据也不按照索引列排序。
+- 非簇索引的中间层节点和根节点存储了叶节点的信息，叶节点存储了表的数据行的信息。叶节点分两种情况。
+
+- 当表中没有簇索引只有非簇索引时，非簇索引的叶节点存储Row ID（指向数据行的指针），也就是表的数据行编号：数据文件ID＋页码＋页中行号。当搜索到非簇索引的叶节点时，从非簇索引的叶节点中读取Row ID，并到表的数据页面中找出数据行。
+- 当表中有簇索引又有非簇索引时，非簇索引叶节点存储的是簇索引键值。当搜索到非簇索引的叶节点时，非簇索引的从叶节点中读取表的簇索引键值，并到簇索引的叶节点上找到数据行。
+
+
+
+### 优缺点
+
+优点：
+
+1. 加速数据检索
+2. 加速连接、ORDER BY和GROUP BY
+3. 查询优化器依赖于索引作用
+4. 强制实施行的唯一性
+
+
+
+缺点：
+
+1. 基于代价的优化模型
+2. 创建索引要花费时间和占用存储空间
+3. 加速了查询速度，减缓了修改速度
 
 
 
@@ -520,6 +641,29 @@ FOR SELECT 语句                            --SELECT查询语句
 ```
 
 
+
+## SQL开发
+
+### 注释
+
+`--`同一行
+
+`/*...*/`
+
+
+
+### 变量声明
+
+```sql
+DECLARE var INT
+SET @var = 1111
+```
+
+
+
+### 控制语句
+
+<img src="pics/image-20230630112259866.png" alt="image-20230630112259866" style="zoom: 67%;" />
 
 
 

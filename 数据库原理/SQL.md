@@ -10,7 +10,7 @@ use bjpower;
 
 
 
-### 基础
+### SELECT
 
 ```sql
 SELECT * FROM name;//查询所有字段，不要用，可读性差，效率低
@@ -25,15 +25,48 @@ select name ,sexe as sexes from table_name;
 
 字段可以参加加减乘除运算
 
+
+
 #### distinct关键字
 
+```sql
 select distinct job from emp;
+```
 
 distinct只能出现在所有字段的最前方，表示联合起来去除重复记录
 
+作用于多列时组合评估重复项
 
 
-### 条件查询
+
+#### TOP
+
+选择最前面几行
+
+```sql
+SELECT top 10 name,continent FROM country;
+#返回列name的前10行记录,只显示name和continent两列
+SELECT top 50 percent name FROM country;
+#返回列name的前百分之50的记录,只显示name一列
+```
+
+
+
+
+
+### INTO
+
+使用结果集来创建新表。
+
+- 注意:可以设置把选择的行存入临时表或者永久表.
+- 局域临时表只有当前用户才能看到,使用INTO #TableName
+- 不添加#号就是进入永久表,临时表在退出程序时会自动删除
+
+
+
+
+
+### WHERE 条件查询
 
 ```mysql
 select 
@@ -73,11 +106,31 @@ select * from emp where job in {'Manager','Salesman'};
 
 否定 常用于is或in
 
+
+
+#### 日期查询
+
+- 日期列用法例子: Birthday > ‘2000-1-1’
+
+
+
+#### 模糊查询
+
+``` sql
+WHERE name LIKE '%k' #以k结尾的串
+WHERE name LIKE '%oo%' #包含oo的元素
+WHERE name LIKE '_oogle' #除了第一个字母，后面为oogle的
+```
+
 - like(模糊查询)
 
 %匹配任意多个字符
 
 _下划线：任意一个字符
+
+[]：[abcd] [a-d] 匹配其中任意一个字符
+
+`[^]`：[\^abcd]  [^]  不匹配其中字符
 
 ```mysql
 //找出名字中有O的
@@ -91,7 +144,68 @@ select * from emp where name like '_R%';
 
 
 
-### 排序
+### 聚合函数
+
+聚合:聚合是预先计算好的数据汇总
+聚合函数:对一组值计算并返回单一的计算结果
+
+
+
+可以直接SELECT之后使用的 
+
+- AVG
+- SUM
+- COUNT
+- MAX
+- MIN
+
+
+
+可以使用`DISTINCT`先消除重复值
+
+#### COUNT
+
+- COUNT(ALL expression) 对组中的每一行都计算 expression 并返回非空值的数量
+- COUNT(DISTINCT expression) 对组中的每一行都计算 expression 并返回唯一非空值的数量
+
+
+
+### *分组查询 GROUP BY
+
+先分组：
+
+```sql
+	select
+		...//分组字段可以写，然后是分组函数
+	from
+		...
+	group by
+		...//先分组在使用分组函数
+	having #必须连在group by后面
+		...//判断语句
+		//能使用where别用having，除非如判断平均值的大小，才选择用where
+```
+
+**`group by`出现的情况下，`select`里面的字段一定要出现在`group by`中**
+
+**空值单独一组**
+
+
+
+- 如果使用 ALL 关键字，那么查询结果将包括由 GROUP BY 子句产生的所有组，即使某些组没有符合搜索条件的行。
+- 没有 ALL 关键字，包含 GROUP BY 子句的 SELECT 语句将不显示没有符合条件的行的组。
+
+
+
+### HAVING
+
+- HAVING 子句是应用于结果集的附加筛选。再次的分组和聚类。逻辑上讲，HAVING 子句从中间结果集对行进行筛选，这些中间结果集是用 SELECT 语句中的 FROM、WHERE 或 GROUP BY 子句创建的。
+- HAVING 子句通常与 GROUP BY 子句一起使用，尽管 HAVING 子句前面不一定必须有 GROUP BY 子句。
+- 聚合函数判断只能在HAVING中使用
+
+
+
+### 排序 ORDER BY
 
 ```mysql
 select
@@ -100,75 +214,53 @@ from
 	emp
 where
 	sal between 2000 and 4000
-order by
+order by ASC#DESC
 	sal;//默认升序，降序加desc
-//顺序不能改变
-```
-
-### 模糊查询
-
-``` sql
-WHERE name LIKE '%k' #以k结尾的串
-WHERE name LIKE '%oo%' #包含oo的元素
-WHERE name LIKE '_oogle' #除了第一个字母，后面为oogle的
 ```
 
 
 
-
-
-### *分组查询
-
-先分组：
-
-```mysql
-	select
-		...//分组字段可以写，然后是分组函数
-	from
-		...
-	group by
-		...//先分组在使用分组函数
-	having//必须连在group by后面
-		...//判断语句
-		//能使用where别用having，除非如判断平均值的大小，才选择用where
-```
-
-**`group by`出现的情况下，`select`里面的字段一定要出现在`group by`中**
+- 指定要排序的列。可以将排序列指定为列名或列的别名和表达式
+- 可指定多个排序列,按先后嵌套排序
+- ORDER BY 子句可包括未出现在此选择列表中的列
+- **如果指定SELECT DISTINCT，或者SELECT语句包含UNION运算符，则排序列必定出现在选择列表中**
 
 
 
-### 多表查询
+### 子查询
 
-#### 连接方式
+嵌套select语句
 
-​	内连接：
+from子句中的子查询，可以将子查询到的结果当成临时的一张表
 
-​		等值连接
+ex:查询最大值
 
-​		非等值连接
-
-​		自连接
-
-​	外连接：
-
-​	全连接： 
-
-
-
-#### 笛卡尔积现象 
-
-解决方法，加条件
-
-```
-select
-	emp.ename,dept.dname
-from
-	emp,dept
-where
-	emp.deptno = dept.deptno
+```sql
+SELECT 
+    *
+FROM
+    table_a
+WHERE
+    p_postions = (SELECT MAX(p_postions) FROM table_a)
+LIMIT 1;
 ```
 
 
+
+子查询受以下条件的限制： 
+
+- 通过比较运算符引入的子查询的选择列表只能包括一个表达式或列名称
+- 如果外部查询的 WHERE 子句包括某个列名，则该子句必须与子查询选择列表中的该列在联接上兼容。
+- 子查询的选择列表中不允许出现 ntext、text 和 image 类型
+- 由于必须返回单个值，所以由无修改的比较运算符（指其后未接关键字 ANY 或 ALL）引入的子查询不能包括 GROUP BY 和 HAVING 子句。
+- 包括 GROUP BY 的子查询不能使用 DISTINCT 关键字。
+- 只有同时指定了 TOP，才可以指定 ORDER BY。
+- 由子查询创建的视图不能更新。
+- 按约定，通过 EXISTS 引入的子查询的选择列表由星号 (*) 组成，而不使用单个列名。由于通过 EXISTS 引入的子查询进行了存在测试，并返回 TRUE 或 FALSE 而非数据，所以这些子查询的规则与标准选择列表的规则完全相同。 
+
+
+
+### 联接查询
 
 #### 内连接 
 
@@ -232,6 +324,8 @@ on
 
 （2）右连接：右连接是只要右边表中有记录，数据就能检索出来
 
+（3）全连接：FULL OUTER JOIN 左右都显示出来，有连接的合并
+
 ```mysql
 select
 	e.name,d.dname
@@ -242,45 +336,6 @@ on
 ```
 
 
-
-### 子查询
-
-嵌套select语句
-
-from子句中的子查询，可以将子查询到的结果当成临时的一张表
-
-ex:查询最大值
-
-```sql
-SELECT 
-    *
-FROM
-    table_a
-WHERE
-    p_postions = (SELECT MAX(p_postions) FROM table_a)
-LIMIT 1;
-```
-
-
-
-### 选择最前面几行
-
-```sql
-SELECT TOP 10 #sql server用法
-LIMIT 5 #mysql 用法
-```
-
-
-
-限制查询数量，分页查询使用
-
-限制的优先级最后
-
-### SQL函数
-
-`having`函数：
-
-出现的原因是where语句不能够和合计函数一起使用
 
 
 
@@ -312,22 +367,6 @@ LIMIT 5 #mysql 用法
 
 
 
-#### 多行处理函数（分组函数 最后输出一行）
-
-##### 	max
-
-##### 	min
-
-##### 	count
-
-count(具体字段) 统计具体字段下不为null的行数
-
-count(*) 统计所有个数
-
-##### 	sum
-
-
-
 ## DML语句
 
 ### 删除数据
@@ -335,13 +374,15 @@ count(*) 统计所有个数
 ```sql
 DELETE 表名 #删除所有数据
 DELETE sales WHERE title_id IN 
-(SELECT title_id  FROM titles WHERE type = 'business')
+(SELECT title_id FROM titles WHERE type = 'business')
 ```
+
+假设为SELECT选择就好，选出来的都删掉了
 
 ### 插入数据
 
 ```sql
-INSERT [INTO] 表名[(字段名[,字段名]...)]  VALUES(常量[,常量]...) 
+INSERT [INTO] 表名(字段名,字段名...)  VALUES(常量[,常量]...) 
 ```
 
 - 如果没指定列的列表，值的顺序必须与表或视图中的列顺序一致
@@ -375,7 +416,15 @@ INSERT [INTO] 表名[(字段名[,字段名]...)]  VALUES(常量[,常量]...)
 
 create table 表名(字段名1 数据类型，字段名2 数据类型，字段名3 数据类型)
 
-default语句可以设置默认值
+`PRIMARY KEY`设置主键
+
+`REFEREBCES`设置外键
+
+`UNIQUE`设置唯一
+
+`default`语句可以设置默认值
+
+`NOT NULL`不为空
 
 ### 数据类型
 
@@ -392,8 +441,6 @@ double
 date
 
 datetime
-
-
 
 ### 删除表：
 
@@ -412,6 +459,8 @@ INSERT语句只插入，执行后一定添加一条记录
 
 
 ## 视图
+
+虚拟表，由查询内容定义
 
 ```sql
 CREATE VIEW [title_view] (name1,name2,...) AS 
@@ -442,6 +491,51 @@ END
 
 
 
+```sql
+Alter PROCEDURE p_third
+   @inputbegin datetime = '1994-9-1',
+   @inputend datetime = '1994-10-1',
+   @outputcount int OUTPUT,
+   @outputsum   int OUTPUT
+AS
+BEGIN
+ 
+  DECLARE @mycontrol int
+  SET @mycontrol =  (SELECT count(*) FROM sales WHERE ord_date between @inputbegin and @inputend)
+
+  SET @outputcount =  (SELECT count(*) FROM sales WHERE ord_date between @inputbegin and @inputend)
+  SET @outputsum =  (SELECT sum(qty) FROM sales WHERE ord_date between @inputbegin and @inputend)
+
+  IF @mycontrol > 0
+  BEGIN
+	SELECT title,ord_date,qty FROM Sales inner join titles 
+	on (sales.title_id = titles.title_id)
+	WHERE ord_date between @inputbegin and @inputend
+  END 
+  ELSE
+  BEGIN
+	SELECT TOP 3 title,ord_date,qty FROM Sales inner join titles 
+	on (sales.title_id = titles.title_id)
+	ORDER BY ord_date DESC
+
+	SET @outputcount =  3
+    SET @outputsum = -1
+
+  END
+END
+
+---
+DECLARE
+  @getoutputcount int,
+  @getoutputsum int
+
+EXEC p_third '1994-9-20', '1994-10-1', @getoutputcount OUTPUT, @getoutputsum OUTPUT
+
+SELECT @getoutputcount, @getoutputsum
+```
+
+
+
 ## 触发器
 
 功能：
@@ -449,6 +543,72 @@ END
 强化约束
 
 跟踪变化
+
+```sql
+create trigger t_DelAAADoDetail
+ON AAA
+FOR Delete
+AS
+print('Just Now You Del a Recorder of AAA table')
+
+Declare
+   @title varchar(80)
+
+SET @title = (SELECT title FROM deleted)
+
+PRINT '" ' + @title + ' " : is your just del book name '
+```
+
+
+
+## 索引
+
+- 加速检索
+- 为表或者视图中
+
+数据结构：B树结构
+
+> 簇索引和非簇索引。（又叫做群集索引和非群集索引）
+
+簇索引：
+
+把相邻的数据在物理结构上也放在一起，适合范围搜索
+
+PS：
+
+1. 只允许有一个簇索引，因为物理数据只有一种排列方式
+2. 需要空间
+3. 默认是非簇索引
+4. 主键比较合适
+
+
+
+非簇索引：
+
+- 非簇索引的结构类似于簇索引，但是表的数据不存储在索引的叶节点上，表的数据也不按照索引列排序。
+- 非簇索引的中间层节点和根节点存储了叶节点的信息，叶节点存储了表的数据行的信息。叶节点分两种情况。
+
+- 当表中没有簇索引只有非簇索引时，非簇索引的叶节点存储Row ID（指向数据行的指针），也就是表的数据行编号：数据文件ID＋页码＋页中行号。当搜索到非簇索引的叶节点时，从非簇索引的叶节点中读取Row ID，并到表的数据页面中找出数据行。
+- 当表中有簇索引又有非簇索引时，非簇索引叶节点存储的是簇索引键值。当搜索到非簇索引的叶节点时，非簇索引的从叶节点中读取表的簇索引键值，并到簇索引的叶节点上找到数据行。
+
+
+
+### 优缺点
+
+优点：
+
+1. 加速数据检索
+2. 加速连接、ORDER BY和GROUP BY
+3. 查询优化器依赖于索引作用
+4. 强制实施行的唯一性
+
+
+
+缺点：
+
+1. 基于代价的优化模型
+2. 创建索引要花费时间和占用存储空间
+3. 加速了查询速度，减缓了修改速度
 
 
 
@@ -478,5 +638,63 @@ DECLARE 游标名称 CURSOR
 [ TYPE_WARNING]                            --类型转换警告语句
 FOR SELECT 语句                            --SELECT查询语句
 [ FOR { READ ONLY | UPDATE [OF 列名称]}][,...n]      --可修改的列
+```
+
+
+
+## SQL开发
+
+### 注释
+
+`--`同一行
+
+`/*...*/`
+
+
+
+### 变量声明
+
+```sql
+DECLARE var INT
+SET @var = 1111
+```
+
+
+
+### 控制语句
+
+<img src="pics/image-20230630112259866.png" alt="image-20230630112259866" style="zoom: 67%;" />
+
+
+
+# 多表查询
+
+#### 连接方式
+
+​	内连接：
+
+​		等值连接
+
+​		非等值连接
+
+​		自连接
+
+​	外连接：
+
+​	全连接： 
+
+
+
+#### 笛卡尔积现象 
+
+解决方法，加条件
+
+```
+select
+	emp.ename,dept.dname
+from
+	emp,dept
+where
+	emp.deptno = dept.deptno
 ```
 

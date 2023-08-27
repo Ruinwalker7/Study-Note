@@ -79,15 +79,19 @@ array([[[ 0,  1,  2,  3],
 
 #### 通用函数：快速的元素级数组函数
 
-![image-20221223161751985](pics/image-20221223161751985.png)
+![image-20221223161751985](assets/image-20221223161751985.png)
 
-![image-20221223161803300](pics/image-20221223161803300.png)
+![image-20221223161803300](assets/image-20221223161751985.png)
 
-![image-20221223161812176](pics/image-20221223161812176.png)
+![image-20221223161803300](assets/image-20221223161803300.png)
 
-![image-20221223161820607](pics/image-20221223161820607.png)
+![image-20221223161812176](assets/image-20221223161812176.png)
 
-![image-20221223161828608](pics/image-20221223161828608.png)
+![image-20221223161820607](assets/image-20221223161820607.png)
+
+![image-20221223161820607-16930626192601](assets/image-20221223161820607-16930626192601.png)
+
+![image-20221223161828608](assets/image-20221223161828608.png)
 
 
 
@@ -255,7 +259,7 @@ obj.rank(ascending=False, method='max')
 
 排名时用于破坏平级关系的方法
 
-![表5-6 排名时用于破坏平级关系的方法](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240.png)
+![1240](assets/1240.png)
 
 
 
@@ -267,7 +271,7 @@ obj.rank(ascending=False, method='max')
 
 #### 主要函数
 
-![](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240-1672048706985-3.jpeg)
+![1240-1672048706985-3](assets/1240-1672048706985-3.jpeg)
 
 
 
@@ -275,7 +279,7 @@ obj.rank(ascending=False, method='max')
 
 #### 读写文本格式的数据
 
-![表6-1 pandas中的解析函数](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240-1672048985185-6.png)
+![表6-1 pandas中的解析函数](assets/1240-1672048985185-6.png)
 
 这些函数的选项可以划分为以下几个大类：
 
@@ -313,11 +317,9 @@ Out[20]:
 
 ##### pandas会用一组经常出现的标记值进行识别，比如NA及NULL：
 
-na_values可以用一个列表或集合的字符串表示缺失值
+na_values可以用一个列表或集合的字符串表示缺失值![1240-1672055673156-9](assets/1240-1672055673156-9.png)
 
-![](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240-1672055673156-9.png)
-
-![](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240-1672055681630-12.png)
+![1240-1672055681630-12](assets/1240-1672055681630-12.png)
 
 
 
@@ -336,7 +338,7 @@ na_values可以用一个列表或集合的字符串表示缺失值
 
 ```python
 data.to_csv(sys.stdout, sep='|') #sep指定分割符，默认为,
-#na_rep='NULL' 指定空字符串为其他标识符号
+na_rep='NULL' #指定空字符串为其他标识符号
 #index=False, header=False 指定行列不显示表示
 #columns=['a', 'b', 'c'] 也可以重新分配标识
 ```
@@ -422,9 +424,7 @@ Out[34]:
 6  1.669025 -0.438570 -0.539741
 ```
 
-![](C:\Users\szlizc\Desktop\study-note\深度学习\python数据分析\pic\1240.png)
-
-
+![1240](assets/1240.png)
 
 #### 数据转换
 

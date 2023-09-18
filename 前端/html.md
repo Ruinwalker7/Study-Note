@@ -144,3 +144,23 @@ HTML 表格由 **<table>** 标签来定义。
 ### 区块
 
 HTML 可以通过 <div> 和 <span>将元素组合起来。
+
+
+
+### 表单
+
+HTML 表单用于收集用户的输入信息。
+
+HTML 表单表示文档中的一个区域，此区域包含交互控件，将用户收集到的信息发送到 Web 服务器。
+
+
+
+表单元素是允许用户在表单中输入内容，比如：文本域（textarea）、下拉列表（select）、单选框（radio-buttons）、复选框（checkbox） 等等。
+
+表单元素的类型时使用`type`指定的
+
+
+
+
+
+div button input label img 

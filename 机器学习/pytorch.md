@@ -1,20 +1,112 @@
 # PyTorch
 
-### Dataset加载数据
+## Tensors
+
+tensors类似于数组和矩阵，与
 
 
 
-### TensorBroad
+## Dataset & DataLoaders
 
-运行tensorbroad：`tensorbroad --logdir logs`
+`torch`提供了两个原始的类：
 
-`SummeryWriter()`
+1. `torch.utils.data.DataLoader`：存储样例和对应标签
+2. `torch.utils.data.Dataset`：提供一个更好的遍历方法
 
-`writer.addImage()`
+
+
+### 加载数据集
+
+- root：存储位置
+- train：训练集or测试集
+- download：是否下载
+- `transform` and `target_transform` 指定特征和标签转换
+
+```python
+import torch
+from torch.utils.data import Dataset
+from torchvision import datasets
+from torchvision.transforms import ToTensor
+import matplotlib.pyplot as plt
+
+
+training_data = datasets.FashionMNIST(
+    root="data",
+    train=True,
+    download=True,
+    transform=ToTensor()
+)
+```
+
+
+
+### 创建自己的数据集
+
+一个通用的数据集类必须要实现下面三个函数，`__init__`，`__len__`，`__getitem__`
+
+
+
+### DataLoaders加载数据
+
+我们希望能够小批量的加载数据集，所以需要使用`DataLoader`
+
+```python
+from torch.utils.data import DataLoader
+
+train_dataloader = DataLoader(training_data, batch_size=64, shuffle=True)
+test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
+
+train_features, train_labels = next(iter(train_dataloader))
+```
+
+
+
+
+
+
+
+## Torch.Utils.TensorBroad
+
+运行tensorbroad：
+
+```python
+pip install tensorboard
+tensorboard --logdir=runs
+```
+
+
+
+`SummeryWriter()`是主要的入口去记录数据
+
+
+
+`writer.addImage()`添加一个图像
+
+
+
+`writer.add_scalar`
+
+```python
+for n_iter in range(100):
+    writer.add_scalar('Loss/train', np.random.random(), n_iter)
+    writer.add_scalar('Loss/test', np.random.random(), n_iter)
+    writer.add_scalar('Accuracy/train', np.random.random(), n_iter)
+    writer.add_scalar('Accuracy/test', np.random.random(), n_iter)
+```
+
+<img src="pics/hier_tags.png" alt="hier_tags" style="zoom:80%;" />
+
+
+
+
 
 
 
 ### Transforms
+
+所有的TorchVision Datasets都有两个属性：`transform`去修改数据，`target_transform`去修改标签
+
+
 
 输入
 
@@ -90,3 +182,52 @@ Conv2d(20, 64, kernel_size=(5, 5), stride=(1, 1))
 在该模块下，所有计算得出的tensor的requires_grad都自动设置为False。
 
 测试的适合不计算导数，可以节约大量资源
+
+
+
+## torchvision
+
+### transforms
+
+#### Compose
+
+将多个变换组合在一起。此转换不支持 torchscript。
+
+```python
+transforms.Compose([
+    transforms.CenterCrop(10),
+    transforms.PILToTensor(),
+    transforms.ConvertImageDtype(torch.float),
+])
+```
+
+
+
+#### ToTensor
+
+将一个PIL图像或者一个ndarray从[0,255]转换为[0,1]
+
+在其他情况下，返回张量而不进行缩放。
+
+
+
+#### Normalize
+
+`Normalize(mean, std, inplace=False)`
+
+标准化一个`tensor`使用平均值和标准差
+
+
+
+
+
+### utils
+
+#### make_grid
+
+make_grid() 函数可用于创建表示网格中多个图像的张量。该实用程序需要 dtype uint8 的单个图像作为输入。
+
+![sphx_glr_plot_visualization_utils_001](pics/sphx_glr_plot_visualization_utils_001.png)
+
+
+

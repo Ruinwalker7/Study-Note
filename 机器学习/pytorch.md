@@ -202,9 +202,19 @@ torch.normal(means, std, out=None)
 
 
 
+##### `addmodule(name, module)`
+
+添加一个子模块到当前模块中，可以使用`name`制定名字
 
 
-### torch.nn.Sequential()
+
+`apply(fn)`
+
+给所有子模块添加参数，通常使用于初始化模型的参数
+
+
+
+#### torch.nn.Sequential()
 
 当一个模型较简单的时候，我们可以使用torch.nn.Sequential类来实现简单的顺序连接模型。
 

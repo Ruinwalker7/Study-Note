@@ -2,7 +2,58 @@
 
 ## Tensors
 
-tensors类似于数组和矩阵，与
+tensors类似于数组和矩阵，可以使用在GPU或者其他硬件
+
+### 初始化一个张量
+
+#### 直接从数据创建
+
+```python
+data = [[1, 2],[3, 4]]
+x_data = torch.tensor(data)
+```
+
+
+
+#### 从numpy数组创建
+
+```python
+np_array = np.array(data)
+x_np = torch.from_numpy(np_array)
+```
+
+
+
+#### 从别的tensor创建
+
+```python
+x_ones = torch.ones_like(x_data) # retains the properties of x_data
+print(f"Ones Tensor: \n {x_ones} \n")
+
+x_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data
+print(f"Random Tensor: \n {x_rand} \n")
+```
+
+
+
+#### 使用随机值或常数值
+
+```python
+shape = (2,3,)
+rand_tensor = torch.rand(shape)
+ones_tensor = torch.ones(shape)
+zeros_tensor = torch.zeros(shape)
+
+print(f"Random Tensor: \n {rand_tensor} \n")
+print(f"Ones Tensor: \n {ones_tensor} \n")
+print(f"Zeros Tensor: \n {zeros_tensor}")
+```
+
+
+
+
+
+
 
 
 
@@ -38,7 +89,7 @@ training_data = datasets.FashionMNIST(
 )
 ```
 
-
+所有的TorchVision Datasets都有两个属性：`transform`去修改数据，`target_transform`去修改标签
 
 ### 创建自己的数据集
 
@@ -100,20 +151,16 @@ for n_iter in range(100):
 
 
 
-
-
-### Transforms
-
-所有的TorchVision Datasets都有两个属性：`transform`去修改数据，`target_transform`去修改标签
-
-
-
 输入
 
 ```python
 PIL.open()
 cv2.read()
 ```
+
+
+
+
 
 
 
@@ -140,6 +187,20 @@ torch.normal(means, std, out=None)
 ### torch.matmul()
 
 张量乘法，如果维数不统一，就会将低维的扩展
+
+
+
+
+
+## torch.nn
+
+### 容器
+
+#### `Module`
+
+所有神经网络模块的父类，自定义的网络也要继承`Module`，
+
+
 
 
 
@@ -187,6 +248,14 @@ Conv2d(20, 64, kernel_size=(5, 5), stride=(1, 1))
 
 ## torchvision
 
+### Datasets
+
+所有的类都是继承自`torch.utils.data.Dataset`，可以传递进DataLoader
+
+https://pytorch.org/vision/stable/datasets.html
+
+
+
 ### transforms
 
 #### Compose
@@ -218,6 +287,20 @@ transforms.Compose([
 标准化一个`tensor`使用平均值和标准差
 
 
+
+#### Resize
+
+`class torchvision.transforms.Resize(size, interpolation=2)`
+功能：重置图像分辨率
+参数：
+size- If size is an int, if height > width, then image will be rescaled to (size * height / width, size)，所以建议size设定为h*w
+interpolation- 插值方法选择，默认为`PIL.Image.BILINEAR`
+
+
+
+#### RandomCrop
+
+在随机位置裁剪给定图像。如果图像是 torch Tensor，则预计其形状为 […, H, W]，其中 … 表示任意数量的前导维度，但如果使用非恒定填充，则输入预计最多有 2 个前导维度方面
 
 
 

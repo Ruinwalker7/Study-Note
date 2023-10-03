@@ -168,3 +168,62 @@ element.getAttribute("attr")/setAttribute("attr’,’value")/removeAttribute("a
 主要区别：<font color=red>注册事件的唯一性</font>
 
  
+
+### DOM浏览器事件流
+
+事件发生会在元素节点之间**按特定的顺序传播**，这个传播过程称之为**事件流**
+
+事件流三个阶段：1、捕获阶段 2、当前目标阶段 3、冒泡阶段
+
+
+
+### DOM事件对象
+
+触发DOM上某个事件时，会产生一个**事件对象**
+
+◼ e.target 和 this 的区别：
+
+​	◼ e.target：触发事件的对象 (某个 DOM 元素) 的引用
+
+​	◼ this：事件绑定元素和e.currentTarget一致
+
+​	◼ 在事件的冒泡或捕获阶段被调用时两者的区别
+
+
+
+### DOM事件委托
+
+例子：对于表格中任何一个元素都能点击？
+
+可以将事件监听器设置在其父节点上，并让子节点上发生的事件冒泡到父节点上， 这种称为<font color=red>事件委托</font>
+
+
+
+
+
+### DOM阻止事件冒泡
+
+解决方案：e.stopPropagation()；//标准写法 
+
+e.cancelBubble = true;//IE 6-8 兼容性写法
+
+
+
+### BOM (浏览器对象) 
+
+- 提供了独立于内容而与浏览器窗口进行交互的对象，其核心对象是 window 
+- 不存在浏览器对象模型（BOM）的官方标准
+
+<img src="assets/image-20230928152500475.png" alt="image-20230928152500475" style="zoom: 67%;" />
+
+
+
+## 同步和异步机制
+
+<img src="assets/image-20230928152716430.png" alt="image-20230928152716430" style="zoom:80%;" />
+
+JavaScript 是以单线程的方式运行的
+
+◼同步任务：在主线程上顺序执行，形成一个执行栈
+
+◼异步任务：JS异步依赖于回调函数

@@ -161,6 +161,15 @@ HTML 表单表示文档中的一个区域，此区域包含交互控件，将用
 
 
 
+## HTTP
+
+标准形式：[协议类型]://[服务器地址]:[端口号]/[资源层级UNIX文件路径] [文件名]?[查詢]#[片段ID]
+
+HTTP协议：HyperText Transfer Protocol (超文本传输协议)
 
 
-div button input label img 
+
+HTTPS协议：HyperText Transfer Protocol over Secure Socket Layer
+
+HTTP的安全版
+

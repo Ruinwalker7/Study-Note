@@ -596,3 +596,111 @@ stdlib.h头文件中 定义了两个变量：
 ...
 #endif //避免重复包含头文件
 ```
+
+
+
+## C++11
+
+### 时间工具chrono库
+
+chrono定义了三种主要类型以及常用工具：
+
+- 时钟
+- 时长
+- 时间点
+
+
+
+***时钟* *(Clock)***要求：
+
+
+
+***平凡时钟* *(TrivialClock)***要求：
+
+- 满足*时钟*要求
+
+
+
+#### 时钟
+
+时钟由起点（或纪元）及计次频率(1分钟，1秒或者1毫秒)组成。
+
+##### `system_clock`
+
+std::chrono::system_clock 表示系统范围的实时壁钟。其不一定单调，系统时间可以被调节，它是**唯一有能力映射到c风格时间**(ctime.h)的C++时钟，满足**平凡时钟要求**
+
+***纪元***：从协调世界时 (UTC) 1970 年 1 月 1 日星期四 00:00:00 开始的时间，不计闰秒
+
+成员函数：
+
+> `std::chrono::system_clock::now()`
+>
+> 返回值：当前时间的时间点
+>
+> `std::chrono::system_clock::to_time_t( const time_point& t )`
+>
+> 参数：要转换的时间点
+>
+> 返回值：返回t的`std::time_t`值，注意`time_t`的精度很低，只有秒
+
+
+
+##### `std::chrono::steady_clock`
+
+表示单调时钟。此时钟的时间点无法减少，因为物理时间向前移动。此时钟与壁钟时间无关，且最适于度量间隔。
+
+
+
+
+
+#### 时间点
+
+##### `std::chrono::time_point`
+
+`std::chrono::time_point` 表示时间中的一个点。它被实现成如同存储一个 `Duration` 类型的自 `Clock` 的纪元起始开始的时间间隔的值。
+
+
+
+时间点与时间点相减返回时长
+
+时间点与时长加减返回时间点
+
+
+
+#### 时长
+
+时长由**时间跨度**组成，定义为某时间单位的某个计次数。例如，“42 秒”可表示为由 42 个 1 秒时间点位的计次所组成的时长。
+
+##### `std::chrono::duration`
+
+```c++
+template<
+    class Rep,
+    class Period = std::ratio<1>
+> class duration;
+```
+
+**成员类型：**
+
+- rep：计次数的数据类型
+- period：计次周期的 [std::ratio](https://zh.cppreference.com/w/cpp/numeric/ratio/ratio)（即每次的秒数）(默认是1秒)
+
+
+
+###### 成员函数
+
+构造函数：
+
+1. 构造函数的 `const Rep2&`能隐式转换为rep（时常的计次类型）且满足下列条件才参与重载决议
+
+   `std::chrono::treat_as_floating_point<rep>::value` 为 true ，或
+   `std::chrono::treat_as_floating_point<Rep2>::value` 为 false 。
+
+
+
+`count()`
+
+计数函数，返回此 duration 的计次数。
+
+
+

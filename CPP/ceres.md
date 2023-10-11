@@ -24,6 +24,6 @@ make test
 # Optionally install Ceres, it can also be exported using CMake which
 # allows Ceres to be used without requiring installation, see the documentation
 # for the EXPORT_BUILD_DIR option for more information.
-make install
+sudo make install
 ```
 

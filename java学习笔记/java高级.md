@@ -189,3 +189,10 @@ SQL性能规范:` IllegalSQLInnerInterceptor`
 实现自动填充，还需要在实现类的对应参数上加上`@TableField(fill=Field.Fill.INSERT_UPDATE)`
 
 上面是在插入和更新时填充对应字段
+
+
+
+
+
+
+

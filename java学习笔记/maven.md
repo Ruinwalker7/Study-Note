@@ -152,3 +152,139 @@ Maven 的 Profile 能够通过几种不同的方式激活。
 - 基于环境变量（用户 / 系统变量）
 - 操作系统配置（例如，Windows family）
 - 现存 / 缺失 文件
+
+现在，在 src/main/resources 目录下有三个环境配置文件：
+
+| 文件名称            | 描述                         |
+| :------------------ | :--------------------------- |
+| env.properties      | 没有配置文件时的默认配置     |
+| env.test.properties | 使用测试配置文件时的测试配置 |
+| env.prod.properties | 使用产品配置文件时的产品配置 |
+
+
+
+
+
+## 仓库
+
+Maven 仓库有三种类型：
+
+- 本地（local）
+- 中央（central）
+- 远程（remote）
+
+### 本地仓库
+
+Maven 本地仓库是机器上的一个文件夹。它在你第一次运行任何 maven 命令的时候创建。
+
+Maven 本地仓库保存你的工程的所有依赖（library jar、plugin jar 等）。当你运行一次 Maven 构建，Maven 会自动下载所有依赖的 jar 文件到本地仓库中。它避免了每次构建时都引用存放在远程机器上的依赖文件。
+
+Maven 本地仓库默认被创建在 %USER_HOME% 目录下。要修改默认位置，在 %M2_HOME%\conf 目录中的 Maven 的 settings.xml 文件中定义另一个路径。
+
+### 中央仓库
+
+Maven 中央仓库是由 Maven 社区提供的仓库，其中包含了大量常用的库。
+
+中央仓库的关键概念：
+
+- 这个仓库由 Maven 社区管理。
+- 不需要配置。
+- 需要通过网络才能访问。
+
+### 远程仓库
+
+如果 Maven 在中央仓库中也找不到依赖的库文件，它会停止构建过程并输出错误信息到控制台。为避免这种情况，Maven 提供了远程仓库的概念，它是开发人员自己定制仓库，包含了所需要的代码库或者其他工程中用到的 jar 文件。
+
+
+
+### Maven 依赖搜索顺序
+
+当我们执行 Maven 构建命令时，Maven 开始按照以下顺序查找依赖的库：
+
+- **步骤 1** － 在本地仓库中搜索，如果找不到，执行步骤 2
+- **步骤 2** － 在中央仓库中搜索，如果找不到，并且有一个或多个远程仓库已经设置，则执行步骤 4，如果找到了则下载到本地仓库中已被将来引用。
+- **步骤 3** － 如果远程仓库没有被设置，Maven 将简单的停滞处理并抛出错误（。
+- **步骤 4** － 在一个或多个远程仓库中搜索依赖的文件，如果找到则下载到本地仓库已被将来引用，否则 Maven 将停止处理并抛出错误。
+
+
+
+## 插件
+
+Maven 实际上是一个依赖插件执行的框架，每个任务实际上是由插件完成。Maven 插件通常被用来：
+
+- 创建 jar 文件
+- 创建 war 文件
+- 编译代码文件
+- 代码单元测试
+- 创建工程文档
+- 创建工程报告
+
+插件通常提供了一个目标的集合，并且可以使用下面的语法执行：
+
+```shell
+mvn [plugin-name]:[goal-name]
+```
+
+例如，一个 Java 工程可以使用 maven-compiler-plugin 的 compile-goal 编译，使用以下命令：
+
+```shell
+mvn compiler:compile
+```
+
+### 插件类型
+
+Maven 提供了下面两种类型的插件：
+
+| 类型              | 描述                                               |
+| :---------------- | :------------------------------------------------- |
+| Build plugins     | 在构建时执行，并在 pom.xml 的 元素中配置。         |
+| Reporting plugins | 在网站生成过程中执行，并在 pom.xml 的 元素中配置。 |
+
+下面是一些常用插件的列表：
+
+| 插件     | 描述                                                |
+| :------- | :-------------------------------------------------- |
+| clean    | 构建之后清理目标文件。删除目标目录。                |
+| compiler | 编译 Java 源文件。                                  |
+| surefile | 运行 JUnit 单元测试。创建测试报告。                 |
+| jar      | 从当前工程中构建 JAR 文件。                         |
+| war      | 从当前工程中构建 WAR 文件。                         |
+| javadoc  | 为工程生成 Javadoc。                                |
+| antrun   | 从构建过程的任意一个阶段中运行一个 ant 任务的集合。 |
+
+```xml
+   <executions>
+      <execution>
+         <id>id.clean</id>
+         <phase>clean</phase>
+         <goals>
+            <goal>run</goal>
+         </goals>
+         <configuration>
+            <tasks>
+               <echo>clean phase</echo>
+            </tasks>
+         </configuration>
+      </execution>     
+   </executions>
+```
+
+
+
+## 创建工程
+
+使用原型（archetype）插件创建工程，我们将使用 maven-archetype-quickstart 插件创建应用
+
+使用 `mvn archetype:generate` 命令，创建 java 应用工程
+
+使用上面的例子，我们可以知道下面几个关键概念：
+
+| 文件夹结构             | 描述                                                         |
+| :--------------------- | :----------------------------------------------------------- |
+| consumerBanking        | 包含 src 文件夹和 pom.xml                                    |
+| src/main/java contains | java 代码文件在包结构下（com/companyName/bank）。            |
+| src/main/test contains | 测试代码文件在包结构下（com/companyName/bank）。             |
+| src/main/resources     | 包含了 图片 / 属性 文件（在上面的例子中，我们需要手动创建这个结构）。 |
+
+
+

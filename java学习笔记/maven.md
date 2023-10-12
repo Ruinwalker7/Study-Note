@@ -118,3 +118,37 @@ Maven 的 clean 目标（clean:clean）绑定到了 clean 生命周期的 clean 
 
 ### Site 生命周期
 
+Maven Site 插件一般用来创建新的报告文档、部署站点等。
+
+阶段：
+
+- pre-site
+- site
+- post-site
+- site-deploy
+
+
+
+## 构建配置文件
+
+构建配置文件是一组配置的集合，用来配置或者覆盖 Maven 构建的配置文件，可以为不同的环境构建不同的构建过程。
+
+### Profile 类型
+
+Profile 主要有三种类型。
+
+| 类型        | 在哪里定义                                                   |
+| :---------- | :----------------------------------------------------------- |
+| Per Project | 定义在工程 POM 文件 pom.xml 中                               |
+| Per User    | 定义在 Maven 设置 xml 文件中 （%USER_HOME%/.m2/settings.xml） |
+| Global      | 定义在 Maven 全局配置 xml 文件中 （%M2_HOME%/conf/settings.xml） |
+
+### Profile 激活
+
+Maven 的 Profile 能够通过几种不同的方式激活。
+
+- 显式使用命令控制台输入
+- 通过 maven 设置
+- 基于环境变量（用户 / 系统变量）
+- 操作系统配置（例如，Windows family）
+- 现存 / 缺失 文件

@@ -1,6 +1,6 @@
 # HTML
 
-<img src="https://www.runoob.com/wp-content/uploads/2013/06/02A7DD95-22B4-4FB9-B994-DDB5393F7F03.jpg" alt="img" style="zoom: 50%;" />
+<img src="https://www.runoob.com/wp-content/uploads/2013/06/02A7DD95-22B4-4FB9-B994-DDB5393F7F03.jpg" alt="img" style="zoom: 33%;" />
 
 `<!DOCTYPE>` 是一种特殊的标记，位于 HTML 文档的最前面，用来告诉浏览器文档使用的是哪个 HTML 或 XHTML 规范。这个声明是用来确保你的网页在不同的浏览器中以尽可能相同的方式渲染。
 
@@ -28,8 +28,6 @@
 `baseURI` 默认为 `document.location.href`。
 
 合法的父级：任何不带有任何其他 `<base>` 元素的`<head>` 元素
-
-
 
 使用说明
 
@@ -82,7 +80,7 @@ HTML 外部资源链接元素 (`<link>`) 规定了当前文档与外部资源的
 
   
 
-type常用：
+**type常用：**
 
 1. **CSS**: `type="text/css"`
    - 用于链接样式表。
@@ -120,8 +118,6 @@ type常用：
 
 
 
-
-
 ### HTML 格式化标签
 
 HTML 使用标签 `<b>`("bold") 与 `<i>`("italic") 对输出的文本进行格式, 如：**粗体** or *斜体*
@@ -129,15 +125,11 @@ HTML 使用标签 `<b>`("bold") 与 `<i>`("italic") 对输出的文本进行格�
 **通常标签 `<strong>` 替换加粗标签 `<b>` 来使用, `<em>` 替换 `<i>`标签使用。**
 
 ```html
-<big>这个文本字体放大</big>
-<em>这个文本是斜体的</em>
-<i>这个文本是斜体的</i>
-<small>这个文本是缩小的</small>
+<big>这个文本字体放大</big><em>这个文本是斜体的</em><i>这个文本是斜体的</i><small>这个文本是缩小的</small>
 这个文本包含
 <sub>下标</sub>
 这个文本包含
-<sup>上标</sup>
-<del>删除字</del>
+<sup>上标</sup><del>删除字</del>
 ```
 
 <big>这个文本字体放大</big>
@@ -178,22 +170,17 @@ HTML 使用标签 `<b>`("bold") 与 `<i>`("italic") 对输出的文本进行格�
 <p>该段落文字从左到右显示。</p>  
 <p><bdo dir="rtl">该段落文字从右到左显示。</bdo></p>  
 
-
-
 #### 地址
 
 ```html
-<address>地址</address>
+<address>Written by <a href="mailto:webmaster@example.com">Jon Doe</a>.<br> 
+Visit us at:<br></address>
 ```
 
 <address>
 Written by <a href="mailto:webmaster@example.com">Jon Doe</a>.<br> 
 Visit us at:<br>
-Example.com<br>
-Box 564, Disneyland<br>
-USA
 </address>
-
 
 
 ### 链接
@@ -219,7 +206,49 @@ USA
 
 
 
-### 表格
+#### name 属性
+
+name 属性规定锚（anchor）的名称。
+
+您可以使用 name 属性创建 HTML 页面中的书签。
+
+书签不会以任何特殊方式显示，它对读者是不可见的。
+
+当使用命名锚（named anchors）时，我们可以创建直接跳至该命名锚（比如页面中某个小节）的链接，这样使用者就无需不停地滚动页面来寻找他们需要的信息了。
+
+##### 命名锚的语法：
+
+```
+<a name="label">锚（显示在页面上的文本）</a>
+```
+
+**提示：**锚的名称可以是任何你喜欢的名字。
+
+**提示：**您可以使用 id 属性来替代 name 属性，命名锚同样有效。
+
+##### 实例
+
+首先，我们在 HTML 文档中对锚进行命名（创建一个书签）：
+
+```
+<a name="tips">基本的注意事项 - 有用的提示</a>
+```
+
+然后，我们在同一个文档中创建指向该锚的链接：
+
+```
+<a href="#tips">有用的提示</a>
+```
+
+您也可以在其他页面中创建指向该锚的链接：
+
+```
+<a href="http://www.w3school.com.cn/html/html_links.asp#tips">有用的提示</a>
+```
+
+在上面的代码中，我们将 # 符号和锚名称添加到 URL 的末端，就可以直接链接到 tips 这个命名锚了。
+
+##### 表格
 
 HTML 表格由 `<table>` 标签来定义。
 
@@ -256,36 +285,6 @@ square：实心正方形
 circle：空心圆
 
 
-
-
-```html
-<ol>
-<li>Coffee</li>
-<li>Milk</li>
-</ol>
-```
-
-<ol>
-<li>Coffee</li>
-<li>Milk</li>
-</ol>
-<h4>嵌套列表：</h4>
-<ul>
-  <li>Coffee</li>
-  <li>Tea
-    <ul>
-      <li>Black tea</li>
-      <li>Green tea
-        <ul>
-          <li>China</li>
-          <li>Africa</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>Milk</li>
-</ul>
-
 ```html
 <h4>嵌套列表：</h4>
 <ul>
@@ -309,11 +308,7 @@ circle：空心圆
 
 ### 表单
 
-HTML 表单用于收集用户的输入信息。
-
-HTML 表单表示文档中的一个区域，此区域包含交互控件，将用户收集到的信息发送到 Web 服务器。
-
-
+HTML 表单用于收集用户的输入信息，此区域包含交互控件，将用户收集到的信息发送到 Web 服务器。
 
 表单元素是允许用户在表单中输入内容，比如：文本域（textarea）、下拉列表（select）、单选框（radio-buttons）、复选框（checkbox） 等等。
 
@@ -366,25 +361,17 @@ function updateButton() {
 }
 ```
 
-
-
 ##### `<input type="text"> `
 
 需要输入文本的时候，默认20字符
-
-
 
 ##### `<input type="password">`
 
 使用星号代替字符
 
-
-
 ##### `<input type="checkbox">`
 
 属性有name、value
-
-
 
 #### `<textarea>`
 
@@ -398,10 +385,6 @@ rows：列数
 
 cols：行数
 
-
-
-
-
 #### `<select>`
 
 ```html
@@ -411,8 +394,6 @@ cols：行数
         <option value="uk">UK</option>
     </select>
 ```
-
-
 
 #### `<label>`
 
@@ -459,9 +440,6 @@ HTTP协议里的各类请求方法、URI/URL、状态码、头字段等每个组
 HTTPS 也就是在 HTTP 与 TCP 层之间增加了 SSL/TLS 安全传输层，HTTP/3 甚至把 TCPP 层换成了基于 UDP 的 QUIC。
 
 **3. 应用广泛和跨平台**
-互联网发展至今，HTTP 的应用范围非常的广泛，从台式机的浏览器到手机上的各种 APP，同时天然具有跨平台的优越性。
-
-
 
 
 
@@ -477,13 +455,9 @@ HTTPS 也就是在 HTTP 与 TCP 层之间增加了 SSL/TLS 安全传输层，HTT
 - HTTP 是媒体独立的：这意味着，只要客户端和服务器知道如何处理的数据内容，任何类型的数据都可以通过HTTP发送，客户端以及服务器指定使用适合的 MIME-type 内容类型。
 - HTTP 是无状态：HTTP 协议是无状态协议，无状态是指协议对于事务处理没有记忆能力，缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大，另一方面，在服务器不需要先前信息时它的应答就较快。
 
-
-
 **HTTPS协议**：HyperText Transfer Protocol over Secure Socket Layer
 
 HTTP的安全版，HTTPS 的主要作用是在不安全的网络上**创建一个安全信道**，并可在使用适当的加密包和服务器证书可被验证且可被信任时，对窃听和中间人攻击提供合理的防护。
-
-
 
 浏览器显示的内容都有 HTML、XML、GIF、Flash 等，浏览器是通过 MIME Type 区分它们
 
@@ -492,10 +466,6 @@ HTTP的安全版，HTTPS 的主要作用是在不安全的网络上**创建一�
 媒体类型通常通过 HTTP 协议，由 Web 服务器告知浏览器的，通过 Content-Type 来表示的。例如：**Content-Type：text/HTML**。
 
 通常只有一些在互联网上获得广泛应用的格式才会获得一个 **MIME Type**，如果是某个客户端自己定义的格式，一般只能以 **application/x-** 开头。
-
-
-
-
 
 ### URI 的组成
 

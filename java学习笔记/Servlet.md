@@ -1,4 +1,4 @@
-# `Servlet
+# Servlet
 
 客户端和服务器的数据库或应用程序中的中间层
 
@@ -35,8 +35,6 @@ service() 方法由容器调用，service 方法在适当的时候调用 `doGet`
 
 Servlet 是服务 HTTP 请求并实现 `javax.servlet.Servlet` 接口的 Java 类。Web 应用程序开发人员通常编写 Servlet 来扩展`javax.servlet.http.HttpServlet`，并实现 Servlet 接口的抽象类专门用来处理 HTTP 请求。
 
-
-
 `doDestroy()`：在生命周期结束的时候调用，整个生命周期只调用一次。
 
 ## Servlet 实例
@@ -61,7 +59,6 @@ Servlet 是服务 HTTP 请求并实现 `javax.servlet.Servlet` 接口的 Java �
         <url-pattern>/HelloWorld</url-pattern>
     </servlet-mapping>
 </web-app>  
-
 ```
 
 
@@ -74,7 +71,7 @@ Servlet 是服务 HTTP 请求并实现 `javax.servlet.Servlet` 接口的 Java �
 
 `HttpServletRequest` 类方法：
 
-![image-20231010170707538](assets/image-20231010170707538.png)
+<img src="assets/image-20231010170707538.png" alt="image-20231010170707538" style="zoom:50%;" />
 
 
 
@@ -88,13 +85,13 @@ http://www.test.com/hello?key1=value1&key2=value2
 
 会产生一个很长的字符串，请不要使用get方法传输密码
 
-
+---
 
 ### POST 方法
 
 把这些信息作为一个单独的消息。消息以标准输出的形式传到后台程序，您可以解析和使用这些标准输出。Servlet 使用 `doPost()` 方法处理这种类型的请求。
 
-
+---
 
 ### 使用 Servlet 读取表单数据
 
@@ -128,8 +125,6 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
   ```
 
 - **结果**：`paramMap` 将包含所有参数及其值的映射。
-
-
 
 #### 接收form表单上传的文件
 
@@ -204,9 +199,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 </form>
 ```
 
-
-
-
+---
 
 ### Servlet 处理响应
 
@@ -267,8 +260,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 }
 ```
 
-
-
 #### 网页重定向与转发
 
 转发：
@@ -276,8 +267,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 ```java
 request.getRequestDispatcher(url).forward(request, response);
 ```
-
-
 
 ◼ 转发和重定向区别 
 
@@ -314,14 +303,12 @@ throws IOException
 
 可以将一或多个 Servlet 过滤器附加到一个 Servlet 或一组 Servlet。Servlet 过滤器也可以附加到 JSP 文件和 HTML 页面。调用 Servlet 前调用所有附加的 Servlet 过滤器。
 
-
-
 目的：
 
 - 在客户端的请求访问后端资源之前，拦截这些请求。
 - 在服务器的响应发送回客户端之前，处理这些响应。
 
-
+---
 
 ### 过滤器方法
 
@@ -438,8 +425,6 @@ web.xml 中的 filter-mapping 元素的顺序决定了 Web 容器应用过滤器
 
 
 
-
-
 ## Cookie 处理
 
 Cookie 保存了各种用户信息，识别返回用户包含三个步骤：
@@ -467,7 +452,7 @@ Cookie 保存了各种用户信息，识别返回用户包含三个步骤：
 | 11   | **public void setComment(String purpose)** 设置cookie的注释。该注释在浏览器向用户呈现 cookie 时非常有用。 |
 | 12   | **public String getComment()** 获取 cookie 的注释，如果 cookie 没有注释则返回 null。 |
 
-
+---
 
 ### 通过 Servlet 设置 Cookie
 
@@ -497,13 +482,13 @@ response.addCookie(cookie);
 cookie.setValue(String value);
 ```
 
- 
+---
 
 ### 通过 Servlet 读取 Cookie
 
 要读取 Cookie，您需要通过调用 `HttpServletRequest` 的 `getCookies( )` 方法创建一个 `javax.servlet.http.Cookie` 对象的数组。然后循环遍历数组，并使用 `getName()` 和 `getValue()` 方法来访问每个 cookie 和关联的值。
 
-
+---
 
 ### 通过 Servlet 删除 Cookie
 

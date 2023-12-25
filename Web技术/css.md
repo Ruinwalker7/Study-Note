@@ -1,40 +1,20 @@
 # CSS
 
-- Cascading Style Sheets
-- 层叠样式表
+- Cascading Style Sheets 层叠样式表
 - 定义如何显示HTML(XML)元素
-- 表现与内容如何分离
-
-
 
 ## CSS简介
 
 <img src="assets/image-20230926211300084.png" alt="image-20230926211300084" style="zoom: 67%;" />
 
 1. 外部样式表
-   CSS编写在扩展名为.css 的单独文件中，并从HTML<link> 元素引用它
+   CSS编写在扩展名为.css 的单独文件中，并从HTML`<link>`元素引用它
 2. 内部样式表
-   将CSS放在HTML文件<head>标签里的<style>标签之中
+   将CSS放在HTML文件`<head>`标签里的`<style>`标签之中
 3. 内联样式
    存在于HTML元素的style属性之中。其特点是每个CSS表只影响一个元素
 
 ## 选择器
-
-选择器分类：
-
-- 基础选择器
-  - 标签选择器
-  - 类选择器
-  - id选择器
-  - 通配符
-
-- 复合选择器
-  - 关系选择器
-  - 子选择器
-  - 并集选择器
-  - 伪类选择器
-  - 属性选择器
-  - 伪元素选择器
 
 <img src="assets/image-20230926212026962.png" alt="image-20230926212026962" style="zoom:80%;" />
 
@@ -42,30 +22,92 @@
 
 ### 基础选择器
 
-#### id 和 class 选择器
+#### 属性选择器
 
-如果你要在HTML元素中设置CSS样式，你需要在元素中设置"id" 和 "class"选择器。
+##### 语法
 
-##### id 选择器
+- [attr]
+  - 表示带有以 attr 命名的属性的元素。
+- [attr=value]
+  - 表示带有以 attr 命名的属性，且属性值为 value 的元素。
+- [attr~=value]
+  - 表示带有以 attr 命名的属性的元素，并且该属性是一个以空格作为分隔的值列表，其中至少有一个值为 value。
 
-id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。
+- [attr|=value]
+  - 表示带有以 attr 命名的属性的元素，属性值为“value”或是以“value-”为前缀（- 为连字符，Unicode 编码为 U+002D）开头。典型的应用场景是用来匹配语言简写代码（如 zh-CN、zh-TW 可以用 zh 作为 value）。
+- [attr^=value]
+  - 表示带有以 attr 命名的属性，且属性值是以 value 开头的元素。
+- [attr$=value]
+  - 表示带有以 attr 命名的属性，且属性值是以 value 结尾的元素。
+- [attr*=value]
+  - 表示带有以 attr 命名的属性，且属性值至少包含一个 value 值的元素。
+- [attr operator value i]
+  - 在属性选择器的右方括号前添加一个用空格隔开的字母 i（或 I），可以在匹配属性值时忽略大小写（支持 ASCII 字符范围之内的字母）。
+- [attr operator value s] 实验性
+  - 在属性选择器的右方括号前添加一个用空格隔开的字母 s（或 S），可以在匹配属性值时区分大小写（支持 ASCII 字符范围之内的字母）。
 
-HTML元素以id属性来设置id选择器,CSS 中 id 选择器以 "#" 来定义。
-
-以下的样式规则应用于元素属性 id="para1":
 
 
+#### class 选择器
 
-##### class 选择器
+##### 语法
+
+```
+.类名 { 样式声明 }
+```
+
+
+注意它与下面的属性选择器语句等价：
+
+```
+[class~=类名] { 样式声明 }
+```
 
 class 选择器用于描述一组元素的样式，class 选择器有别于id选择器，class可以在多个元素中使用。
 
 class 选择器在 HTML 中以 class 属性表示, 在 CSS 中，类选择器以一个点 **.** 号显示：
 
-在以下的例子中，所有拥有 center 类的 HTML 元素均为居中。
+:hand: 栗子：
 
 ```css
-.center {text-align:center;}
+/* 所有含有 class="spacious" 类的元素 */
+.spacious {
+  margin: 2em;
+}
+
+/* 所有含有 class="spacious" 类的 <li> 元素 */
+li.spacious {
+  margin: 2em;
+}
+
+/* 所有同时含有“spacious”和“elegant”类的 <li> 元素 */
+/* 例如 class="elegant retro spacious" */
+li.spacious.elegant {
+  margin: 2em;
+}
+```
+
+
+
+#### id 选择器
+
+id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。
+
+HTML元素以id属性来设置id选择器，CSS 中 id 选择器以 "#" 来定义。
+
+```
+#id 属性值 { 样式声明 }
+```
+
+
+
+#### 标签选择器
+
+```
+元素 { 样式声明 }
+span {
+  background-color: skyblue;
+}
 ```
 
 
@@ -84,28 +126,45 @@ class 选择器在 HTML 中以 class 属性表示, 在 CSS 中，类选择器以
 
 语法：
 
+```css
 former_element + target_element { style properties } 
+```
+
+
 
 #### 兄弟元素选择器
 
-兄弟选择符，位置无须紧邻，只须同层级
+兄弟选择符，位置无须紧邻，只须同层级，选择与第一个元素同层级的所有第二个元素
 
 语法：
 
+```css
 former_element ~ target_element { style properties }
+```
+
+
 
 #### 直接子元素选择器
 
-匹配作为第一个元素的直接后代的第二元素
+只匹配那些被第二个选择器匹配的元素，这些元素是被第一个选择器匹配的元素的直接子元素。
 
 语法：
 
+```css
 former_element > target_element { style properties }
+```
+
+
 
 #### 后代元素选择器
 
-- 通常用单个空格字符表示
-- 如果第二个选择器元素具有第一个选择器匹配的祖先元素，他们将被选择
+**后代组合器**（通常用单个空格（" "）字符表示）组合了两个选择器，如果第二个选择器匹配的元素具有与第一个选择器匹配的祖先（父母，父母的父母，父母的父母的父母等）元素，则它们将被选择。利用后代组合器的选择器称为*后代选择器*。
+
+```css
+selector1 selector2 {
+  /* property declarations */
+}
+```
 
 
 
@@ -113,14 +172,42 @@ former_element > target_element { style properties }
 
 并集选择器、并集组合器
 
+当多个选择器共享相同的声明时，它们可以被编组进一个以逗号分隔的列表。选择器列表也可以作为参数传递给一些函数式 CSS 伪类。逗号之前和/或之后可以有空白（字符）。
+
 - 语法
   - `element, element, element{ style properties }`
 
+以下三个声明是等效的：
+
+```css
+span {
+  border: red 2px solid;
+}
+div {
+  border: red 2px solid;
+}
+```
+
+```css
+span,
+div {
+  border: red 2px solid;
+}
+```
+
+```css
+:is(span, div) {
+  border: red 2px solid;
+}
+```
 
 
-#### 属性选择器
 
-![image-20230927092103616](assets/image-20230927092103616.png)
+##### 有效和无效的组选择器
+
+如果组选择器中有一个选择器是无效的，则整个组选择器都会无效，除了接受可容错选择器列表的函数式伪类。
+
+解决无效的选择器列表问题的一种方法是使用 :is() 或 :where() 伪类，它们接受一个可容错选择器列表。可容错选择器列表中的每个选择器都被单独解析。因此列表中任何无效的选择器会被忽略，而有效的选择器则会被有效使用。
 
 
 
@@ -146,9 +233,52 @@ former_element > target_element { style properties }
 
 `Selector :: pseudo-elements{ property: value; }`
 
-![image-20230927100149900](assets/image-20230927100149900.png)
+<img src="assets/image-20230927100149900.png" alt="image-20230927100149900" style="zoom: 67%;" />
 
-![image-20230927100154315](assets/image-20230927100154315.png)
+<img src="assets/image-20230927100154315.png" alt="image-20230927100154315" style="zoom:70%;" />
+
+
+
+### 伪类
+
+添加到选择器的关键字，用于指定所选元素的特殊状态。例如，伪类 `:hover`可以用于选择一个按钮，当用户的指针悬停在按钮上时，设置此按钮的样式。
+
+伪类由冒号（`:`）后跟着伪类名称组成（例如，`:hover`）。函数式伪类还包含一对括号来定义参数（例如，`:dir()`）。附上了伪类的元素被定义为*锚元素*（例如，`button:hover` 中的 `button`）。
+
+#### `:active`
+
+匹配被用户激活的元素。它让页面能在浏览器监测到激活时给出反馈。当用鼠标交互时，它代表的是用户按下按键和松开按键之间的时间。
+
+```css
+/* Selects any <a> that is being activated */
+a:active {
+  color: red;
+}
+```
+
+为保证样式生效，需要把 `:active` 的样式放在所有链接相关的样式之后。这种链接伪类先后顺序被称为 *LVHA 顺序*：`:link` — `:visited` — `:hover` — `:active`。
+
+#### `:any-link`
+
+匹配每个具有href属性的元素
+
+#### `:checked`
+
+表示任何处于选中状态的**radio**(`<input type="radio">`), **checkbox** (`<input type="checkbox">`) 或 ("select") 元素中的**option** HTML 元素 ("option")。
+
+用户通过勾选/选中元素或取消勾选/取消选中，来改变该元素的 :checked 状态。
+
+#### `:empty`
+
+选择不包含任何子元素的元素。子元素可以是元素节点或文本（包括空格）。但是注释、处理指令和 CSS content 不会影响元素是否被认定为空。
+
+#### `:enabled`
+
+表示可以被激活的元素
+
+#### `:first-child`
+
+
 
 
 
@@ -213,8 +343,6 @@ former_element > target_element { style properties }
 }
 ```
 
-
-
 ### 边框
 
 - 边距和填充框之间绘制的
@@ -237,13 +365,13 @@ former_element > target_element { style properties }
   - overflow: scroll
   - overflow-y: scroll
 
-
-
 ## 背景与边框
 
 `background-color`设置颜色
 
 `background-image`属性设置背景图
+
+- body {background-image:url('paper.gif');}
 
 `background-repeat`属性用于控制图像的平铺行为。可用的值是
 
@@ -256,11 +384,46 @@ former_element > target_element { style properties }
 
 
 
+## 文本
+
+color：设置颜色
+
+### 对齐
+
+文本排列属性是用来设置文本的水平对齐方式。
+
+文本可居中或对齐到左或右,两端对齐.
+
+当text-align设置为"justify"，每一行被展开为宽度相等，左，右外边距是对齐（如杂志和报纸）。
+
+```css
+h1 {text-align:center;}
+p.date {text-align:right;}
+p.main {text-align:justify;}
+p.uppercase {text-transform:uppercase;} /*转换*/
+p.lowercase {text-transform:lowercase;}
+p.capitalize {text-transform:capitalize;} 
+p {text-indent:50px;} /* 缩进 */
+```
+
+### 字体
+
+`font-family`设置字体先后顺序
+
 ## CSS布局
+
+### 正常布局流
+
+- 取得元素的内容来放在一个独立的元素盒子中，然后在其周边加上内边距、边框和外边距 
+- 默认的，一个块级元素的宽度是其父元素的100%，其高度与其内容高度一致。
+- 内联元素的height，width与内容一致（无法设置内联元素的height width）
+- 默认的，内部的块级元素会在垂直方向，从顶部开始一个接一个地放置，每个块级元素会在上一个元素下面另起一行
+- 独立容器，容器里面的子元素不会影响到外面的元素
+- 内联元素：只要在其父级块级元素的宽度内有足够的空间，它们与其他内联元素、相邻的文本内容（或者被包裹的）被安排在同一行
 
 ### 浮动
 
-- 使元素脱离文档流`脱标`，按照指定方向发生移动，遇到父级边界或者相邻的浮动元素停了下来，提升层级半层
+- 使元素脱离文档流`脱标`，按照指定方向发生移动，遇到父级边界或者相邻的浮动元素停了下来，提升层级**半层**
 - float：left， right，none，inherit
 - 浮动盒子不再保留原来的空间
 - 浮动盒子按一行显示，且上边沿对齐，具备行内块特性
@@ -268,7 +431,7 @@ former_element > target_element { style properties }
 
 #### 标准文档流
 
-文档流指的是元素排版布局过程中，元素会**默认**自动从左往后，从上往下的流式排列方式。
+文档流指的是元素排版布局过程中，元素会**默认**自动从左往右，从上往下的流式排列方式。
 
 即不对页面进行任何布局控制时，浏览器默认的HTML布局方式，这种布局方式从左往右，从上往下，有点像流水的效果，我们称为`流式布局`。
 
@@ -293,7 +456,6 @@ former_element > target_element { style properties }
 			height: 400px;
 			background-color: green;
 			color: #fff;
-
 		}
 	</style>
 </head>
@@ -356,6 +518,10 @@ former_element > target_element { style properties }
 | auto    | 由浏览器定夺，如果内容被修剪，就会显示滚动条     |
 | inherit | 规定从父元素继承overflow属性的值                 |
 
+#### Clear属性
+
+指定不允许元素周围有浮动元素，可选：left right both none inherit
+
 
 
 ### 定位
@@ -370,9 +536,15 @@ former_element > target_element { style properties }
 - 绝对定位(absolute)
   - 完全脱离文档流
   - 如果有定位父级相对于定位父级发生偏移，没有定位父级相对于整个文档发生偏移
+- 固定定位（fixed）
+  - 绝对定位相对于其最近的定位祖先或者<html>
+  - 固定定位相对于浏览器视口本身
 
-
-
+- 粘性定位（sticky）
+- z-index
+  - 元素位于Z轴上的位置
+  - 数值越大，越在前面
+  - 默认：auto（0）
 
 
 ### flex
@@ -388,7 +560,5 @@ display:flex 是一种布局方式。它即可以应用于容器中，也可以�
 
 
 
-## 字体
 
-`font-family`设置字体先后顺序
 

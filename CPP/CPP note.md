@@ -546,7 +546,8 @@ Queue::Queue(int qs) : qsize(qs)，front(NULL), rear(NULL), item(0)
 
 - 构造函数不能是虚函数
 - 析构函数要是虚函数
-- 友元函数不能是虚函数
+  - 友元函数不能是虚函数
+
 
 一些经验：
 
@@ -596,6 +597,81 @@ stdlib.h头文件中 定义了两个变量：
 ...
 #endif //避免重复包含头文件
 ```
+
+
+
+## C++ STL
+
+### 容器
+
+#### vector
+
+##### 使用vector
+
+```c++
+#include <vector>
+```
+
+##### 创建vector
+
+```c++
+vector<int> arr1;								//一个空数组
+vector<int> arr2 {1, 2, 3, 4, 5};				//包含1、2、3、4、5五个变量
+// 不要先创建空间然后 push_back 会导致vector大小多很多
+vector<int> arr3(4);							//开辟4个空间，值默认为0
+vector<int> arr4(5, 3);							//5个值为3的数组
+vector<int> arr5(arr4);							//将arr4的所有值复制进去，和arr4一样
+vector<int> arr6(arr4.begin(), arr4.end());		//将arr4的值从头开始到尾复制
+vector<int> arr7(arr4.rbegin(), arr4.rend());	//将arr4的值从尾到头复制
+```
+
+##### 遍历访问
+
+```c++
+//迭代器：vector<int>::iterator
+for (vector<int>::iterator it = arr.begin(); it != arr.end(); it++)
+{
+    cout << *it << endl;
+}
+//迭代器：vector<int>::reverse_iterator
+for (vector<int>::reverse_iterator it = arr.rbegin(); it != arr.rend(); it++)
+{
+    cout << *it << endl;
+}
+// 下标访问
+for (int i = 0; i < arr.size(); i++)
+{
+	cout << arr[i] << endl;
+}
+// for循环
+for (auto num : arr)
+{
+	cout << num << endl;
+}
+```
+
+##### 容量和大小
+
+```c++
+vec.size();					// 返回当前存储了多少数字
+vec.capacity();				// 返回容量
+vec.max_size();				// 返回最大可设置的大小
+vec.empty();				// 判断是否为空
+vec.resize();				// 改变size的大小
+vec.reserve();				// 改变capacity的大小
+vec.shrink_to_fit();		// 收缩到合适
+```
+
+##### 常用操作
+
+```c++
+// 尾部插入
+push_back();
+emplace_back();
+pop_back 
+```
+
+
 
 
 

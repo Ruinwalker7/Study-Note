@@ -4,13 +4,33 @@
 
 https://jalammar.github.io/illustrated-transformer/
 
-## 注意力机制
+## 注意力机制（Attention）
 
-希望能够找到重要的东西
+### 为什么我们需要Attention?
 
-简单来说：注意力机制描述了（序列）元素的加权平均值，其权重是根据输入的query和元素的键值进行动态计算的
+希望能够找到重要的东西，从关注全部到关注重点。
 
-**Query**：Query（**查询**）是一个特征向量，描述我们在序列中寻找什么，即我们可能想要注意什么。
+简单来说：注意力机制描述了序列元素的加权平均值（带权求和！！！），其权重是根据输入的query和元素的键值进行动态计算的
+
+### Attention原理
+
+在原始的RNN中，Encoder 循环接收上一层的输出以及新的输入进行运算，得到最后的 **hidden states**，就是我们的上下文，将其放入 Decoder 中解码，但是这里存在的问题是处理长难句变得有挑战性，因为当上下文较长的时候，远距离的 hidden states 可能在运算中被忽视了。
+
+Sequence2Sequence 的 Encoder-Decoder 中，所有的 Encoder 层输出的 hidden states 都会传给 Decoder。
+
+Attention Decoder 在产生输出之前执行额外的步骤。为了更加关注对应位置的输入，Decoder 执行以下操作：
+
+1. 查看它收到的 Endcoder hidden states - 每个编码器隐藏状态与输入句子中的某个单词最相关
+2. 给每个隐藏状态一个分数
+3. 将每个隐藏状态乘以其 softmax 分数，从而放大高分 hidden states，并忽略低分 hidden states
+
+推荐可视化博客：https://jalammar.github.io/visualizing-neural-machine-translation-mechanics-of-seq2seq-models-with-attention/
+
+<video src="../../../Downloads/attention_tensor_dance.mp4"></video>
+
+#### 计算隐藏状态分数
+
+**Query**（**查询**）：Query是一个特征向量，描述我们在序列中寻找什么，即我们可能想要注意什么。
 
 **Keys：**每个输入元素有一个**键**，它也是一个特征向量。该特征向量粗略地描述了该元素“提供”什么，或者它何时可能很重要。键的设计应该使得我们可以根据Query来识别我们想要关注的元素。例如，键通常由编码器产生，代表输入序列中每个词或短语的抽象表示。
 
@@ -24,7 +44,7 @@ $$
 
 **如何生成**：在实际的深度学习模型中，特别是在使用Transformer架构的模型中，key、value和query通常通过对输入数据的不同表示进行线性变换得到。具体来说，对于一个给定的输入向量，模型会使用不同的权重矩阵分别生成key、value和query。这些权重矩阵是模型训练过程中学习得到的，能够将输入数据映射到最适合当前任务的key、value和query表示上。
 
-**匹配过程**：一旦key、value和query被确定，模型将使用一个兼容性函数（通常是点积或者某种形式的加权和）来计算每个query与所有key之间的匹配程度。这个匹配程度通常通过softmax函数转换为权重，表示每个value对于回答query的重要性。最后，根据这些权重，模型将所有的value进行加权求和，得到最终的输出。
+**匹配过程**：一旦key、value和query被确定，模型将使用一个函数（通常是点积或者某种形式的加权和）来计算每个query与所有key之间的匹配程度。这个匹配程度通常通过softmax函数转换为权重，表示每个value对于回答query的重要性。最后，根据这些权重，模型将所有的value进行加权求和，得到最终的输出。
 
 ## 自注意力机制
 
@@ -67,3 +87,9 @@ $$
 一般情况下，在自然语言处理应用中，我们会先使用嵌入算法将每个输入词转换为向量。
 
 在Transformer中，每个词都嵌入到一个大小为512的向量中，这发生在最底层的编码器中
+
+
+
+
+
+可视化，里面讲述词嵌入、transformer的动画很好：https://github.com/bbycroft/llm-viz

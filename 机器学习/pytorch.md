@@ -53,7 +53,26 @@ print(f"Zeros Tensor: \n {zeros_tensor}")
 
 
 
+### 反向传播的梯度追踪与计算
 
+`torch.Tensor`类具有一个属性 `requires_grad` 用以表示该`tensor`是否需要计算梯度，如果该属性设置为`True`的话，表示这个张量需要计算梯度，计算梯度的张量会跟踪其在后续的所有运算。
+
+当我们完成计算后需要反向传播（back propagation）计算梯度时，使用 `.backward()` 即可自动计算梯度。当然，对于一些我们不需要一直跟踪记录运算的`tensor`，也可以取消这一操作，尤其是在对模型进行验证的时候，不会对变量再做反向传播，所以自然不需要再进行追踪，从而减少运算。
+
+每当对于`requires_grad` 为`True`的tensor进行一些运算时（除了用户直接赋值、创建等操作），这些操作都会保存在变量的 `grad_fn` 属性中，该属性返回一个操作，即是上一个作用在这个变量上的操作：
+
+如果需要继续往前得到连续的操作，对`grad_fu`使用 `next_functions` 即可获得其上一步的操作（`next_functions` 返回一个多层的tuple，真正的操作记录对象要经过**两层**的`[0]`索引：
+
+```python
+x=torch.ones(2,2,requires_grad=True)
+y = x+2
+z = y*y*3
+out = z.mean()
+
+print(out.grad_fn)
+print(out.grad_fn.next_functions[0][0])
+print(out.grad_fn.next_functions[0][0].next_functions[0][0])
+```
 
 
 

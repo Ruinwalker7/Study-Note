@@ -74,7 +74,12 @@ print(out.grad_fn.next_functions[0][0])
 print(out.grad_fn.next_functions[0][0].next_functions[0][0])
 ```
 
+#### 取消追踪运算
 
+有时我们并不需要追踪梯度，将`requires_grad`设置为`False`即可，但是由于有时候有些tensor需要在模型训练时计算梯度，在模型验证时不计算梯度，我们不希望直接对tensor的`requires_grad`属性做更改，所以需要更好、更方便的设置方法：
+
+1. 使用`with torch.no_grad()` 语句块，放在这个语句块下的所有tensor**操作**（不影响tensor本身）都不会被跟踪运算
+2. 使用`tensor.detach()` 方法获得一个跟原tensor值一样但是不会被记录运算的tensor
 
 ## Dataset & DataLoaders
 

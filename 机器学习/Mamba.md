@@ -22,3 +22,11 @@ structured state space sequence models (SSMs) 可以被视为RNN和CNN结合，�
 3. 结构：使用Mamba
 
 ![image-20240323175941060](assets/image-20240323175941060.png)
+
+
+
+参考：
+
+[Mamba: the easy way](https://jackcook.com/2024/02/23/mamba.html)
+
+[Mamba: the hard way](https://srush.github.io/annotated-mamba/hard.html)

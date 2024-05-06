@@ -1,4 +1,4 @@
-# c++笔记
+## C++笔记
 
 ### 一、开始学习C++
 
@@ -62,37 +62,6 @@ fmtflags setf(fmtflags, fmtflags)  //第二原型
 #### 结构体
 
 如果初始化比成员少，余下的成员会被设置为0
-
-
-
-#### 字符串
-
-##### 每次一行输入：
-
-###### `getline()`
-
-`cin.getline()`输入，舍弃\n
-
-###### `get()`
-
-不舍弃\n，所以可以用 `cin.get(name,num).get()`来舍弃换行符
-
-
-
-#### string类
-
-可变长度的字符串，可以加减，等于
-
-**计算长度**：str1.size()
-
-输入：`getline(cin,str)`
-
-为了避免在字符串输出中出现太多
-
-```c++
-R"("the king" is me)";
-R"+*("(sdafaf?)",sadafas.)+*";
-```
 
 
 
@@ -576,15 +545,28 @@ ex：为圆和椭圆创造一个共同的类
 
 
 
-### 十二、代码重用
+### 字符串
 
-#### valarray类简介
+#### string类
 
-`valarray<int>  q_value`
+可变长度的字符串，可以加减，等于
+
+**计算长度**：str1.size()
+
+输入：`getline(cin,str)`
+
+为了避免在字符串输出中出现太多
+
+```c++
+R"("the king" is me)";
+R"+*("(sdafaf?)",sadafas.)+*";
+```
+
+
 
 ### 头文件
 
-##### stdlib.h
+#### stdlib.h
 
 stdlib.h头文件中 定义了两个变量：
 
@@ -675,7 +657,7 @@ pop_back
 
 
 
-## C++11
+## C++ 11
 
 ### 时间工具chrono库
 

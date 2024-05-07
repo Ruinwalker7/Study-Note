@@ -1,5 +1,89 @@
 # PyTorch
 
+## Torch
+
+torch 包定义了Tensor数据结构和数学运算，还提供一些其他函数
+
+### 序列化（Serialization）
+
+#### 存储和读取张量
+
+`torch.save`和`torch.load()`可以轻松保存张量：
+
+```python
+t = torch.tensor([1., 2.])
+torch.save(t, 'tensor.pt')
+torch.load('tensor.pt')
+```
+
+`torch.save()` 和 `torch.load()` 默认使用 Python 的 pickle，因此您还可以将多个张量保存为 Python 对象的一部分，例如元组、列表和字典等。
+
+需要注意的是，如果你保存的张量是视图，则会将原有张量内存保存到文件中，如果你的视图仅仅只是原有张量的很小一部分，则可能会存储大量没必要的数据，你可以使用`clone()`方法使view独立。
+
+```python
+>>> large = torch.arange(1, 1000)
+>>> small = large[0:5]
+>>> torch.save(small.clone(), 'small.pt')  # saves a clone of small
+>>> loaded_small = torch.load('small.pt')
+>>> loaded_small.storage().size()
+5
+```
+
+`torch.load()`会首先在CPU上加载，然后移动到保存他们的设备
+
+#### 推理中保存模型
+
+##### 保存`state_dict`
+
+```python
+torch.save(model.state_dict(), PATH)
+
+model = TheModelClass(*args, **kwargs)
+model.load_state_dict(torch.load(PATH))
+model.eval()
+```
+
+##### 保存整个模型
+
+```python
+torch.save(model, PATH)
+
+# Model class must be defined somewhere
+model = torch.load(PATH)
+model.eval()
+model.to(device)	# 如果需要换设备
+```
+
+
+
+#### 训练中保存Checkpoint
+
+- 需要保存除了模型参数以外的东西
+- 通过字典的方式加载
+
+```python
+torch.save({
+            'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': loss,
+            ...
+            }, PATH)
+
+model = TheModelClass(*args, **kwargs)
+optimizer = TheOptimizerClass(*args, **kwargs)
+
+checkpoint = torch.load(PATH)
+model.load_state_dict(checkpoint['model_state_dict'])
+optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+epoch = checkpoint['epoch']
+loss = checkpoint['loss']
+
+model.eval()
+# - or -
+model.train()
+```
+
 ## Tensors
 
 tensors类似于数组和矩阵，可以使用在GPU或者其他硬件
@@ -80,6 +164,98 @@ print(out.grad_fn.next_functions[0][0].next_functions[0][0])
 
 1. 使用`with torch.no_grad()` 语句块，放在这个语句块下的所有tensor**操作**（不影响tensor本身）都不会被跟踪运算
 2. 使用`tensor.detach()` 方法获得一个跟原tensor值一样但是不会被记录运算的tensor
+
+
+
+## torch.nn
+
+是模型的基本构建块
+
+### 容器
+
+#### `Module`
+
+所有神经网络模块的父类，自定义的网络也要继承`Module`，
+
+
+
+##### `addmodule(name, module)`
+
+添加一个子模块到当前模块中，可以使用`name`制定名字
+
+
+
+`apply(fn)`
+
+给所有子模块添加参数，通常使用于初始化模型的参数
+
+
+
+`parameters()`
+
+返回模块参数的迭代器，通常将这个返回值传递给优化器。
+
+#### torch.nn.Sequential()
+
+当一个模型较简单的时候，我们可以使用torch.nn.Sequential类来实现简单的顺序连接模型。
+
+```python
+import torch.nn as nn
+from collections import OrderedDict
+model = nn.Sequential(OrderedDict([
+                  ('conv1', nn.Conv2d(1,20,5)),
+                  ('relu1', nn.ReLU()),
+                  ('conv2', nn.Conv2d(20,64,5)),
+                  ('relu2', nn.ReLU())
+                ]))
+ 
+print(model)
+print(model[2]) # 通过索引获取第几个层
+'''运行结果为：
+Sequential(
+  (conv1): Conv2d(1, 20, kernel_size=(5, 5), stride=(1, 1))
+  (relu1): ReLU()
+  (conv2): Conv2d(20, 64, kernel_size=(5, 5), stride=(1, 1))
+  (relu2): ReLU())
+Conv2d(20, 64, kernel_size=(5, 5), stride=(1, 1))
+'''
+```
+
+
+
+### torch.nn.train()和torch.nn.eval()
+
+在评估模型的适合一定要打开torch.nn.eval()，这样会固定住BN和Dropout，不然如果test输入的batch size太小会影响BN和Dropout
+
+
+
+### with torch.no_grad
+
+在该模块下，所有计算得出的tensor的requires_grad都自动设置为False。
+
+测试的适合不计算导数，可以节约大量资源
+
+
+
+## torch.optim
+
+优化器，实现各种优化算法
+
+```python
+# 普通构建
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+# 针对每一层的学习率不同
+optim.SGD([{'params': model.base.parameters(), 'lr': 1e-2},
+        {'params': model.classifier.parameters()}], lr=1e-3, momentum=0.9)
+```
+
+1. Weight Decay:
+
+   Weight Decay是一种正则化技术，通常用来防止模型过拟合。通过给模型权重施加惩罚，weight decay可以减少模型的复杂度，从而使模型在未见过的数据上表现得更好。实际上，它通过在损失函数中添加一个L2惩罚项来实现，即对模型的所有参数的平方和进行惩罚。通常，weight_decay的值设置得比较小，比如1e-2, 1e-3, 1e-4等。
+
+2. Momentum:
+
+   Momentum是一个帮助优化算法更快收敛的技术。在标准的梯度下降中，每一次更新仅仅依赖于当前的梯度值，这有时会导致优化过程停滞或者在鞍点处徘徊。引入momentum后，更新步骤不仅依赖于当前的梯度，还考虑了前一步的更新方向，从而为优化过程提供了一种“惯性”，允许优化过程更平滑地通过噪声区域和鞍点。momentum的值通常设在0.9左右，具体可以根据模型训练的实际情况来微调
 
 ## Dataset & DataLoaders
 
@@ -214,72 +390,6 @@ torch.normal(means, std, out=None)
 
 
 
-
-
-## torch.nn
-
-### 容器
-
-#### `Module`
-
-所有神经网络模块的父类，自定义的网络也要继承`Module`，
-
-
-
-##### `addmodule(name, module)`
-
-添加一个子模块到当前模块中，可以使用`name`制定名字
-
-
-
-`apply(fn)`
-
-给所有子模块添加参数，通常使用于初始化模型的参数
-
-
-
-#### torch.nn.Sequential()
-
-当一个模型较简单的时候，我们可以使用torch.nn.Sequential类来实现简单的顺序连接模型。
-
-```python
-import torch.nn as nn
-from collections import OrderedDict
-model = nn.Sequential(OrderedDict([
-                  ('conv1', nn.Conv2d(1,20,5)),
-                  ('relu1', nn.ReLU()),
-                  ('conv2', nn.Conv2d(20,64,5)),
-                  ('relu2', nn.ReLU())
-                ]))
- 
-print(model)
-print(model[2]) # 通过索引获取第几个层
-'''运行结果为：
-Sequential(
-  (conv1): Conv2d(1, 20, kernel_size=(5, 5), stride=(1, 1))
-  (relu1): ReLU()
-  (conv2): Conv2d(20, 64, kernel_size=(5, 5), stride=(1, 1))
-  (relu2): ReLU())
-Conv2d(20, 64, kernel_size=(5, 5), stride=(1, 1))
-'''
-```
-
-
-
-### torch.nn.train()和torch.nn.eval()
-
-在评估模型的适合一定要打开torch.nn.eval()，这样会固定住BN和Dropout，不然如果test输入的batch size太小会影响BN和Dropout
-
-
-
-### with torch.no_grad
-
-在该模块下，所有计算得出的tensor的requires_grad都自动设置为False。
-
-测试的适合不计算导数，可以节约大量资源
-
-
-
 ## torchvision
 
 ### Datasets
@@ -347,4 +457,8 @@ make_grid() 函数可用于创建表示网格中多个图像的张量。该实�
 ![sphx_glr_plot_visualization_utils_001](pics/sphx_glr_plot_visualization_utils_001.png)
 
 
+
+## 面试题
+
+### pytorch如何微调fine tuning？
 

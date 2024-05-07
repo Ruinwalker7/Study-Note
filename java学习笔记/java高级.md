@@ -142,7 +142,13 @@ public class OrderDaoFactory{
 
 
 
-# Mybaits Plus
+# Mybatis-Plus
+
+是Mybatis框架的扩展库，提供了更方便的API和工具，可以简化数据库操作：
+
+1. 提供代码生成、分页、查询构建等功能
+2. 提供常见的API和攻击，简化数据库CRUD操作
+3. 提供Lambda表达式的API
 
 ### 分页插件
 

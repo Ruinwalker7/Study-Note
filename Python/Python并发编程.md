@@ -6,7 +6,7 @@ Python并发编程有三种方式:
 - 多进程`Process`
 - 多协程`Coroutine`
 
-![img](assets/v2-85cbf58bd524db8874c3bbf92df1abbb_720w.webp)
+![temp_compressed_image.png](https://lsky.atoposlibra.top/i/2024/03/23/65fee0535dba5.png)
 
 
 

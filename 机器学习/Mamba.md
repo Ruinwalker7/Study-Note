@@ -192,6 +192,10 @@ $e^x\approx1+x$ ，而我们使用的双线性变换是一阶 Pade 近似$e^x\ap
 
 ## Mamba 背景 ③——S4
 
+S4：序列的结构化状态空间——Structured State Space for Sequences
+
+
+
 在SSM公式中，最重要的就是矩阵 $A$，因为它决定了如何从先前的状态中获取信息。
 
 <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F07542fb1-d4b6-421e-8b2a-a3f0a7790939_2028x876.png" alt="img" style="zoom:33%;" />
@@ -222,9 +226,13 @@ S4 是一种最新的状态空间架构，可以被视为RNN和CNN结合，对�
 
 
 
-### S4和SSM的问题
+## SSM存在问题
 
-SSM和S4无法选择性的关注指定的输入，也就是说矩阵A、B和C的静态性质导致了其无法进行内容感知（content-awareness）。
+1. 由于SSM的时不变性，在针对不同的输入时，矩阵的参数都是不变的。
+
+   <img src="https://img-blog.csdnimg.cn/direct/5b0c8ec1c046453499ced2e2bafde6a5.png" alt="举例参数B不变" style="zoom:40%;" />
+
+2. SSM和S4无法选择性的关注指定的输入，也就是说矩阵A、B和C的静态性质导致了其无法进行内容感知（content-awareness）。
 
 
 
@@ -236,31 +244,74 @@ $$
 \begin{aligned}x_k&={\overline{A}}x_{k-1}+{\overline{B}}u_k\\y_k&={\overline{C}}x_k+{\overline{D}}u_k\end{aligned}
 $$
 
-其中**离散参数 $\overline A,\overline B,\overline C,\overline D$ 都是固定的（时不变）**，这样就导致了SSM和S4，在语言建模和生成中至关重要的某些任务（即关注或忽略特定输入的能力）上表现不佳。
+其中**离散参数 $\overline A,\overline B,\overline C,\overline D$ 都是固定的（时不变）**，这样就导致了S4，在语言建模和生成中至关重要的某些任务（即关注或忽略特定输入的能力）上表现不佳。
 
-SSM 的循环表示通过压缩了整个历史记录，创建了一个非常高效的小状态。然而，与不压缩历史记录（通过注意力矩阵）的 Transformer 模型相比，它要弱得多。
+Mamba希望在以下两个部分取得一个折中的方案：
 
-Mamba希望能够获取一个和Transformer一样的有能力的小状态：
+- 创建了一个非常高效的小状态（SSM, RNN）
+- 压缩整个上下文（Transformer）
 
 <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F84b8a71a-6310-416b-8622-e9166593171e_1540x464.png" alt="img" style="zoom:33%;" />
 
-然而Mamba可以让这些参数根据输入而变化，选择性能提供了一种类似于注意力机制的效果，通过使模型参数成为输入的函数，Mamba 可以“专注于”输入中对于当前任务更重要的部分：
+然而Mamba可以让这些参数根据输入而变化，选择性提供了一种类似于注意力机制的效果，通过使模型参数成为输入的函数，Mamba 可以“专注于”输入中对于当前任务更重要的部分：
 $$
-\begin{aligned}&h_t={\bar{\mathbf{A}}}x_{t-1}+s_{\bar{\mathbf{B}}}(u_t)u_t\\&y_t=s_\mathbf{C}(u_t)x_t\end{aligned}
+\begin{aligned}&h_t={\bar{\mathbf{A}}}h_{t-1}+S_{\bar{\mathbf{B}}}(x_t)x_t\\&y_t=S_\bar{\mathbf{C}}(x_t)h_t\end{aligned}
 $$
-> 注意：矩阵 A 保持不变，因为我们希望状态本身保持静态，但它受到影响的方式（通过 B 和 C）是动态的。
+> 注意：矩阵 A 保持不变，因为我们希望历史状态本身保持静态，但它受到影响的方式（通过 B 和 C）是动态的。
 
-![image-20240506164609264](assets/image-20240506164609264.png)
+### Mamba中三个矩阵的变化
 
-它们一起选择将哪些内容保留在隐藏状态以及忽略哪些内容，因为它们现在依赖于输入。
+![s4到s6的变化](assets/image-20240506164609264.png)
 
-较小的步长 Δ 会导致忽略特定单词，而是更多地使用先前的上下文，而较大的步长 Δ 会更多地关注输入单词而不是上下文
+$B$ 矩阵和 $C$ 矩阵的大小从原来的(D,N)「D指的是输入向量的维度，比如一个颜色的变量一般有R G B三个维度，*N* 指SSM的隐藏层维度(hidden dimension)，当然 **一般设的远小于*L*** 」变成了(B,L,N)「*这三个参数分别对应batch size、sequence length、hidden state size*」
+
+<img src="https://img-blog.csdnimg.cn/direct/c2831d5d41df41ff969a093bc92cdaaf.png" alt="img" style="zoom: 50%;" />
+
+<img src="https://img-blog.csdnimg.cn/direct/5bbb4286fd14415e94ede51aa4caf5f8.png" alt="img" style="zoom: 50%;" />
+
+对于输入x的每一个维度D都有一个SSM，用于计算。
+
+#### Mamba种B,C,$\Delta$是如何动态获取的
+
+输入x和参数矩阵 $B$ 之间仅有一个维度不同，所以Mamba的解决方式是通过线性连接层获取参数矩阵。
+$$
+\begin{aligned}
+&s_B(x)=\text{Linear}_N(x) \\
+&s_C(x)=\text{Linear}_N(x) \\
+&s_\Delta(x)=\mathrm{Linear}_D(x) \\
+&\tau_{\Delta}=\mathrm{softplus}
+\end{aligned}
+$$
+这样使得参数矩阵变得和输入相关，每个输入的token的矩阵都不同，可以解决内容感知问题。
+
+#### 如何理解B,C,$\Delta$的作用
+
+较小的步长 $\Delta$ 会导致忽略特定单词，而是更多地使用先前的上下文，而较大的步长 Δ 会更多地关注输入单词而不是上下文
 
 <img src="assets/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F06b21aab-aa32-450a-ae02-b976a2c9f9d8_2520x616.png" alt="img" style="zoom:50%;" />
 
-但如果选择性给我们带来一个很严重的问题：由于矩阵是动态的，我们无法预计算卷积核 $\overline{K}$，也就导致我们只能够使用RNN的方式进行训练，这非常慢！！！这也导致了 Mamba 的作者提出了他们的第二个伟大想法。
 
 
+#### 如何理解S4的时不变性和S6的时变性
+
+> 这里的时不变性特指：推理时**参数矩阵**不随输入变化而变化，但在训练过程中，矩阵是可以根据需要去做梯度下降而变化的，具体来说，对于SSM和S4模型：
+>
+> - 首先，对于训练过程：在训练时，模型会接收输入数据，并尝试预测输出。模型的参数(矩阵A、B、C的值)在每次迭代中通过梯度下降等优化算法进行调整，以便减少预测误差
+>
+>   - 这意味着矩阵的值会随着训练的进行而逐渐变化，以更好地适应数据
+> - 其次，对于推理过程：一旦模型训练完成，进入推理阶段，此时矩阵A、B、C的值将固定为训练结束时学习到的值
+>   - 即在推理时，模型使用这些固定的矩阵来处理新的输入数据并生成预测
+> - 顺带提前说一嘴，即无论是SSM，还是mamba，训练时 **参数肯定会变** 这点毫无疑问
+>
+> 但推理时，SSM的参数矩阵不会随着输入的不同而改变，即对任何输入都是一视同仁
+>
+> 但mamba会对输入做选择性推理，虽然推理时模型本身的参数也不会变，但是模型会先计算出参数矩阵，针对每个token的参数矩阵都不相同。
+>
+> 总之，虽然Mamba模型在推理时**参数本身也不变**，但由于其设计中引入的选择性机制，使得模型能够根据输入数据的特点进行有区别的对待，这与SSM模型相比是一个显著的进步。且Mamba这种选择性是通过训练阶段的参数学习来实现的(根据训练阶段学习到的参数对不同的输入给予不同的处理)，而不是在推理阶段动态调整参数
+
+### 选择性带来的问题
+
+虽然选择性能让我们关注重要的部分，但选择性给我们带来一个很严重的问题：由于矩阵是动态的，我们无法提前计算卷积核 $\overline{K}$，也就导致我们只能够使用RNN的方式进行训练，这非常缓慢！！！这也导致了 Mamba 的作者提出了他们的第二个伟大想法。
 
 ## Mamba 介绍 ②——扫描算法
 
@@ -340,6 +391,7 @@ B参考博客
 [^b.5]:HiPPO的讲解：https://hazyresearch.stanford.edu/blog/2020-12-05-hippo
 [^b.6]:S4的讲解: [The Annotated S4](https://srush.github.io/annotated-s4)
 [^b.7]:另外一个Mamba的讲解,更多的偏向于数学的角度 Mamba No. 5 (A Little Bit Of…)
+[^b.8]:非常全面的一个ssm到mamba的博客：https://blog.csdn.net/v_JULY_v/article/details/134923301
 
 ---
 

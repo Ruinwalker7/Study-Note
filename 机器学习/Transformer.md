@@ -10,7 +10,7 @@ https://jalammar.github.io/illustrated-transformer/
 
 希望能够找到重要的东西，从关注全部到关注重点。
 
-简单来说：注意力机制描述了序列元素的加权平均值（带权求和！！！），其权重是根据输入的query和元素的键值进行动态计算的
+简单来说：注意力机制描述了序列元素的加权平均值，其权重是根据输入的query和元素的key-value进行动态计算的
 
 ### Attention原理
 
@@ -26,7 +26,7 @@ Attention Decoder 在产生输出之前执行额外的步骤。为了更加关�
 
 推荐可视化博客：https://jalammar.github.io/visualizing-neural-machine-translation-mechanics-of-seq2seq-models-with-attention/
 
-<video src="../../../Downloads/attention_tensor_dance.mp4"></video>
+
 
 #### 计算隐藏状态分数
 
@@ -93,3 +93,5 @@ $$
 
 
 可视化，里面讲述词嵌入、transformer的动画很好：https://github.com/bbycroft/llm-viz
+
+https://blog.csdn.net/weixin_43610114/article/details/126684999

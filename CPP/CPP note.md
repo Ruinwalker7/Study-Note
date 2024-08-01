@@ -762,3 +762,168 @@ template<
 
 
 
+### 移动（Move）
+
+移动操作是为了避免不必要的复制，从而提高性能。`std::move` 实际上并不移动对象的数据，它只是将对象的所有权从一个对象转移到另一个对象，而不进行数据的复制。移动操作通常包括移动构造函数和移动赋值运算符。比如：
+
+```cpp
+std::string str1 = "Hello";
+std::string str2 = std::move(str1); // 移动 str1 到 str2
+```
+
+在这个例子中，`str1` 的数据被移动到 `str2` 中，`str1` 可能会变成一个空的或无效的状态。这里没有进行数据的复制操作，只是数据的所有权从 `str1` 转移到了 `str2`。
+
+#### 和复制的主要区别
+
+1. **资源管理**：
+   - 复制操作会分配新的资源并复制数据。
+   - 移动操作不会分配新的资源，而是转移资源的所有权。
+
+2. **性能**：
+   - 复制可能会很昂贵，特别是对于大对象。
+   - 移动通常更高效，因为它避免了不必要的数据复制。
+
+3. **对象状态**：
+   - 复制后，原对象和新对象都是有效且独立的。
+   - 移动后，原对象处于一种未指定但有效的状态（通常是空的或被清理的）。
+
+使用 `std::move` 可以显著提高程序性能，特别是在处理需要频繁传递的临时对象时。因此，了解并合理使用这两种操作方式对于优化C++程序的性能是非常重要的。
+
+
+
+### 智能指针
+
+`unique_ptr`、`shared_ptr` 和 `weak_ptr`
+
+#### `unique_ptr`
+
+unique_ptr 代表的是专属所有权，即由 unique_ptr 管理的内存，只能被一个对象持有。
+所以，**unique_ptr 不支持复制和赋值**，如下：
+
+```cpp
+unique_ptr<string> p1(new string("I'm Li Ming!"));
+unique_ptr<string> p2(new string("I'm age 22."));
+	
+cout << "p1：" << p1.get() << endl;
+cout << "p2：" << p2.get() << endl;
+
+p1 = p2;					// 禁止左值赋值
+unique_ptr<string> p3(p2);	// 禁止左值赋值构造
+
+unique_ptr<string> p3(std::move(p1));
+p1 = std::move(p2);	// 使用move把左值转成右值就可以赋值了，效果和auto_ptr赋值一样
+
+cout << "p1 = p2 赋值后：" << endl;
+cout << "p1：" << p1.get() << endl;
+cout << "p2：" << p2.get() << endl;
+```
+
+因此，**unique_ptr 只支持移动**, 即如下：
+
+```cpp
+auto w = std::make_unique<Widget>();
+auto w2 = std::move(w); // w2 获得内存所有权，w 此时等于 nullptr
+```
+
+##### 性能
+
+因为 C++ 的 zero cost abstraction 的特点，unique_ptr 在默认情况下和裸指针的大小是一样的。
+所以 **内存上没有任何的额外消耗，性能是最优的**
+
+#### `shared_ptr`
+
+存在一个引用计数，如果为0的时候则释放内存
+
+##### 构造
+
+1. `shared_ptr< T > sp1`： 空的shared_ptr，可以指向类型为T的对象
+
+```c++
+shared_ptr<Person> sp1;
+Person *person1 = new Person(1);
+sp1.reset(person1);	// 托管person1
+```
+
+2. `shared_ptr< T > sp2(new T());` 定义shared_ptr，同时指向类型为T的对象
+
+```c++
+shared_ptr<Person> sp2(new Person(2));
+shared_ptr<Person> sp3(sp1);
+```
+
+3. `shared_ptr<T[]> sp4;` 空的shared_ptr，可以指向类型为T[]的数组对象 C++17后支持
+
+```c++
+shared_ptr<Person[]> sp4;
+```
+
+4. `shared_ptr<T[]> sp5(new T[] { … });` 指向类型为T的数组对象 C++17后支持
+
+```c++
+shared_ptr<Person[]> sp5(new Person[5] { 3, 4, 5, 6, 7 });
+```
+
+5. `shared_ptr< T > sp6(NULL, D()); `
+
+```c++
+shared_ptr<Person> sp6(NULL, DestructPerson()); //空的shared_ptr，接受一个D类型的删除器，使用D释放内存
+```
+
+6. `shared_ptr< T > sp7(new T(), D());` 
+
+```c++
+shared_ptr<Person> sp7(new Person(8), DestructPerson());//定义shared_ptr,指向类型为T的对象，接受一个D类型的删除器，使用D删除器来释放内存
+```
+
+##### 初始化
+
+1. 方式一：构造函数
+
+```c++
+shared_ptr<int> up1(new int(10));  // int(10) 的引用计数为1
+shared_ptr<int> up2(up1);  // 使用智能指针up1构造up2, 此时int(10) 引用计数为2
+```
+
+2. 方式二：使用make_shared 初始化对象，分配内存效率更高(推荐使用)
+
+   make_shared函数的主要功能是在动态内存中分配一个对象并初始化它，返回指向此对象的shared_ptr; 用法：
+   make_shared<类型>(构造类型对象需要的参数列表);
+
+```c++
+shared_ptr<int> up3 = make_shared<int>(2); // 多个参数以逗号','隔开，最多接受十个
+shared_ptr<string> up4 = make_shared<string>("字符串");
+shared_ptr<Person> up5 = make_shared<Person>(9);
+```
+
+##### 赋值
+
+```c++
+shared_ptrr<int> up1(new int(10));  // int(10) 的引用计数为1
+shared_ptr<int> up2(new int(11));   // int(11) 的引用计数为1
+up1 = up2;	// int(10) 的引用计数减1,计数归零内存释放，up2共享int(11)给up1, int(11)的引用计数为2
+```
+
+##### 主动释放对象
+
+```c++
+shared_ptrr<int> up1(new int(10));
+up1 = nullptr ;	// int(10) 的引用计数减1,计数归零内存释放 
+up1 = NULL; // 作用同上 
+```
+
+##### 重置
+
+p.reset() ; 将p重置为空指针，所管理对象引用计数 减1
+p.reset(p1); 将p重置为p1（的值）,p 管控的对象计数减1，p接管对p1指针的管控
+p.reset(p1,d); 将p重置为p1（的值），p 管控的对象计数减1并使用d作为删除器
+p1是一个指针！
+
+##### 交换
+
+p1 和 p2 是智能指针
+
+```c++
+std::swap(p1,p2); // 交换p1 和p2 管理的对象，原对象的引用计数不变
+p1.swap(p2);    // 交换p1 和p2 管理的对象，原对象的引用计数不变
+```
+
